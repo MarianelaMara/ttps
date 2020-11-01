@@ -14,7 +14,7 @@ function validate(validation) {
 
 function createUsersValidation(data) {
     const schema = yup.object().shape({
-        username: yup.string().max(15).matches(/^[a-z]+$/).required(),
+        username: yup.string().required(),
         password: yup.string().required(),
     });
 
