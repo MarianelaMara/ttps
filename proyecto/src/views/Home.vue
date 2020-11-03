@@ -4,7 +4,6 @@
       <p>ControlCovid</p>
     </div>
     <navbar></navbar>
-    
   </div>
 </template>
 
@@ -14,7 +13,14 @@ export default {
   name: 'Home',
   components: {
     navbar
-  }
+  },
+  data: () => ({
+    token: $cookies.get("token"),
+    nombre: $cookies.get("nombre"),
+    apellido: $cookies.get("apellido"),
+    rol: $cookies.get("rol"),
+    idsistema: $cookies.get("idsistema")
+  })
 }
 </script>
 

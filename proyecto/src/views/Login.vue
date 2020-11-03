@@ -9,13 +9,12 @@
                 <input type="password" v-model="password" placeholder="Password" class="form-control form-control-lg" required>
             </div>
             <div>
-              <b-alert show variant="danger" v-if="error"> Usuario o contraseña incorrecta </b-alert>
+              <b-alert show variant="danger" v-if="err"> Usuario o contraseña incorrecta </b-alert>
              </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-dark btn-lg btn-block" >Iniciar sesión</button>
             </div>
         </form>
-        
   </div>
 </template>
 
@@ -27,24 +26,22 @@ export default {
   data: () => ({
     username: "",
     password: "",
-    rol: "",
-    error: false,
-    info: null,
-    status: null
+    err: false
   }),
   methods: {
     login(){     
         axios.post('http://localhost:3000/login', {username: this.username, password: this.password})
         .then(response => {
-          this.info = response.data;
-          this.status= response.data.status;
-          if(this.status == 200){
+          this.$cookies.set("token",response.data.token);
+          this.$cookies.set("nombre",response.data.nombre);
+          this.$cookies.set("apellido",response.data.apellido);
+          this.$cookies.set("rol",response.data.rol);
+          this.$cookies.set("idsistema",response.data.idsistema);
           this.$router.push('/home');
-        }
-        else {
-          this.error = true;
-        }//hacer try catch y de la api devolver error
-      })
+        })
+        .catch(error => {
+          this.err = true;
+        });
     }
   }
 }

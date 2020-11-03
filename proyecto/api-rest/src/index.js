@@ -17,7 +17,7 @@ app.use((error, req, res, next) => {
   });
 });
 //routes
-app.use(require('./routes/personal'));
+app.use(require('./routes/personal.routes'));
 
 app.get('/', (req, res) => {
     res.send(`Hi! Server is listening on port ${port}`)
