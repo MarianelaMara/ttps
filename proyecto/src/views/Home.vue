@@ -1,29 +1,27 @@
 <template>
   <div>
-    <div class="p-3 mb-2 bg-white text-dark">
-      <p>ControlCovid</p>
-    </div>
-    <navbar></navbar>
+    <Header></Header>
+    <Navbar></Navbar>
   </div>
 </template>
 
 <script>
-import navbar from '../components/Navbar'
+import Navbar from '../components/Navbar'
+import Header from '../components/Header'
 export default {
   name: 'Home',
   components: {
-    navbar
-  },
-  data: () => ({
-    token: $cookies.get("token"),
-    nombre: $cookies.get("nombre"),
-    apellido: $cookies.get("apellido"),
-    rol: $cookies.get("rol"),
-    idsistema: $cookies.get("idsistema")
-  })
+    Navbar,
+    Header
+  }
 }
 </script>
 
 <style>
+body {
+  
+  width: 100%;
+  height: 100%;
+}
 
 </style>

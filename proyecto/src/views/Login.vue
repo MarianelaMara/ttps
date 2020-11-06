@@ -1,7 +1,7 @@
 <template>
   <div class="vue-tempalte" >
         <form @submit="login" class="border p-3 form">
-           <p class="h4 text-center mb-4">ControlCovid</p>
+           <p class="h3 text-center mb-4">ControlCovid</p>
             <div  class="form-group">
                 <input type="text" v-model="username" placeholder="Nombre de usuario" class="form-control form-control-lg" required>
             </div>
@@ -32,11 +32,11 @@ export default {
     login(){     
         axios.post('http://localhost:3000/login', {username: this.username, password: this.password})
         .then(response => {
-          this.$cookies.set("token",response.data.token);
-          this.$cookies.set("nombre",response.data.nombre);
-          this.$cookies.set("apellido",response.data.apellido);
-          this.$cookies.set("rol",response.data.rol);
-          this.$cookies.set("idsistema",response.data.idsistema);
+          sessionStorage.setItem('nombre',response.data.nombre);
+          sessionStorage.setItem('apellido',response.data.apellido);
+          sessionStorage.setItem('token',response.data.token);
+          sessionStorage.setItem('rol',response.data.rol);
+          sessionStorage.setItem('idsistema',response.data.idsistema);
           this.$router.push('/home');
         })
         .catch(error => {
@@ -48,20 +48,17 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+p {
+    font-family: 'Dancing Script', cursive;
+}
 * {
   box-sizing: border-box;
 }
-
-body {
-  background:white;
- 
-}
-
 body,
 html,
 .vue-tempalte
  {
-  
   width: 100%;
   height: 100%;
 }
@@ -73,6 +70,7 @@ html,
 }
 .form{
   widows: 400px;
+  background-color: white;
 }
 
 

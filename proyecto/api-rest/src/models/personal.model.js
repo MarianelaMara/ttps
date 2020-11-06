@@ -32,7 +32,7 @@ Personal.login = (usuario, contraseña, result) => {
     if (res.length) {
       //console.log("found personal: ", res[0]);
       const personal = new Personal({
-        token: createToken(),
+        token: createToken(res[0]),
         nombre: res[0].nombre,
         apellido: res[0].apellido,
         rol: res[0].rol,
