@@ -15,14 +15,6 @@
             <b-card title="Nombre y apellido" sub-title="Legajo">
             </b-card>
         </div>
-        <div>
-            <b-card title="Nombre y apellido" sub-title="Legajo">
-            </b-card>
-        </div>
-        <div>
-            <b-card title="Nombre y apellido" sub-title="Legajo">
-            </b-card>
-        </div>
     </div>
   </div>
 </template>

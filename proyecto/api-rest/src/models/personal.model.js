@@ -47,6 +47,21 @@ Personal.login = (usuario, contraseña, result) => {
     result({ kind: "not_found" }, null);
   });
 };
+Personal.getAllJefes = (result) => {
+  sql.query('SELECT * FROM personal INNER JOIN persona ON personal.idpersona = persona.idpersona WHERE rol="jefe"', (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } else {
+      result(null, res);
+      return; 
+    }
+
+    // not found Customer with the id
+    result({ kind: "not_found" }, null);
+  });
+}
 
 
 

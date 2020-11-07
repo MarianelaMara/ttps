@@ -2,7 +2,7 @@ const jwt = require('jwt-simple');
 const moment = require('moment');
 const config = require('../configs/config.js');
 
-const checkToken = (req, res, next) => {
+checkToken = (req, res, next) => {
     if (req.headers['user_token'] === undefined) {
         return res.json({
             error: 'you must include the header'
@@ -24,9 +24,6 @@ const checkToken = (req, res, next) => {
             error: 'expired token'
         });
     };
-
-    id= payload.idpersona;
-
     next();
 };
 
