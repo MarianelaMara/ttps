@@ -10,7 +10,7 @@ const Personal = function(p) {
   this.apellido = p.apellido;
   this.rol = p.rol;
   this.idsistema = p.idsistema;
-  this.idpersona = p.idpersona
+  this.idempleado = p.idempleado
 };
 //Método que asigna el token
 const createToken = () => {
@@ -22,7 +22,7 @@ const createToken = () => {
 }
 
 Personal.login = (usuario, contraseña, result) => {
-  sql.query('SELECT * FROM personal INNER JOIN persona ON personal.idpersona = persona.idpersona WHERE usuario="'+ [usuario] + '" AND contraseña="'+ [contraseña]  + '"', (err, res) => {
+  sql.query('SELECT * FROM empleado WHERE usuario="'+ [usuario] + '" AND contraseña="'+ [contraseña]  + '"', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -30,39 +30,125 @@ Personal.login = (usuario, contraseña, result) => {
     }
 
     if (res.length) {
-      //console.log("found personal: ", res[0]);
-      const personal = new Personal({
+        const personal = new Personal({
         token: createToken(res[0]),
         nombre: res[0].nombre,
         apellido: res[0].apellido,
         rol: res[0].rol,
         idsistema: res[0].idsistema,
-        idpersona: res[0].idpersona
+        idempleado: res[0].idempleado
       });
       result(null, personal);
       return;
     }
 
-    // not found Customer with the id
     result({ kind: "not_found" }, null);
   });
 };
 Personal.getAllJefes = (result) => {
-  sql.query('SELECT * FROM personal INNER JOIN persona ON personal.idpersona = persona.idpersona WHERE rol="jefe"', (err, res) => {
+  sql.query('SELECT * FROM empleado WHERE rol="jefe"', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
-    } else {
-      result(null, res);
-      return; 
     }
-
-    // not found Customer with the id
+    if (res.length) {
+      result(null, res);
+      return;
+    }
     result({ kind: "not_found" }, null);
   });
-}
+};
 
+Personal.getJefe = (id, result) => {
+  sql.query('SELECT * FROM empleado WHERE rol="jefe" AND idempleado = ' + [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+    // not found Jefe with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+//método que devuelve el jefe de sistema ingresado
+Personal.getJefeSistema = (idsistema, result) => {
+  sql.query('SELECT idempleado FROM empleado WHERE rol="jefe" AND idsistema = ' + [idsistema], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) {
+      result(null, res[0].idempleado);
+      return;
+    }
+    // not found Jefe with the idsistema
+    result({ kind: "not_found" }, null);
+  });
+};
 
+Personal.getAllMedicos = (result) => {
+  sql.query('SELECT * FROM empleado WHERE rol="medico"', (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+    result({ kind: "not_found" }, null);
+  });
+};
 
+Personal.getMedico = (id, result) => {
+  sql.query('SELECT * FROM empleado WHERE rol="medico" AND idempleado = ' + [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }if (res.length) {
+      result(null, res);
+      return;
+    }
+    // not found Medico with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Personal.getMedicoBuscar = (nombre, apellido, result) => {
+  sql.query('SELECT * FROM empleado WHERE rol="medico" AND nombre= "' + [nombre]+'" AND apellido="'+[apellido]+'"', (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }if (res.length) {
+      result(null, res);
+      return;
+    }
+    // not found Medico 
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Personal.getJefeBuscar = (nombre, apellido, result) => {
+  sql.query('SELECT * FROM empleado WHERE rol="jefe" AND nombre= "' + [nombre]+'" AND apellido="'+[apellido]+'"', (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }if (res.length) {
+      result(null, res);
+      return;
+    }
+    // not found Jefe 
+    result({ kind: "not_found" }, null);
+  });
+};
 module.exports = Personal;

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/views/Login'
 import Home from '@/views/Home'
 import BuscarJefe from '@/views/BuscarJefe'
+import VistaJefe from '@/views/VistaJefe'
 
 Vue.use(Router)
 
@@ -15,7 +16,7 @@ function authorization(to, from, next) {
 }
 
 export default new Router({
-  mode: 'history',
+  mode:'history',
   routes: [
     {
       path: '/',
@@ -32,6 +33,12 @@ export default new Router({
       path: '/buscarJefe',
       name: 'BuscarJefe',
       component: BuscarJefe,
+      beforeEnter: authorization
+    },
+    {
+      path: '/vistaJefe/:id',
+      name: 'VistaJefe',
+      component: VistaJefe,
       beforeEnter: authorization
     }
   ]

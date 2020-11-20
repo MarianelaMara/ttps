@@ -1,6 +1,6 @@
 <template>
   <div class="vue-tempalte" >
-        <form @submit="login" class="border p-3 form">
+        <form @submit.prevent="login" class="border p-3 form">
            <p class="h3 text-center mb-4">ControlCovid</p>
             <div  class="form-group">
                 <input type="text" v-model="username" placeholder="Nombre de usuario" class="form-control form-control-lg" required>
@@ -19,9 +19,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-const url = 'https://localhost/3000/'; 
+import axios from 'axios'; 
 export default {
   data: () => ({
     username: "",

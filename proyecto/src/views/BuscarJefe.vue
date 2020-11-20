@@ -4,22 +4,32 @@
     <NavbarPerfil></NavbarPerfil>
     <div class="search">
         <b-navbar type="light" variant="light">
-            <b-nav-form>
-                <b-form-input class="mr-sm-2" placeholder="Buscar Jefe"></b-form-input>
+            <b-nav-form @submit.prevent="search">
+                <b-form-input v-model="nombre" class="mr-sm-2" placeholder="Nombre" required></b-form-input>
+                <b-form-input v-model="apellido" class="mr-sm-2" placeholder="Apellido" required></b-form-input>
                 <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit">Buscar</b-button>
             </b-nav-form>
         </b-navbar>
     </div>
-    <div>
-        <div>
-            <b-card title="Nombre y apellido" sub-title="Legajo">
-            </b-card>
-        </div>
+    <div v-if="err">
+      <p>No se encontro jefe</p>
+    </div>
+    <div v-else>
+      <div v-for="jefe in jefes"  v-bind:my="jefe" v-bind:key="jefe.idempleado">
+        <b-card>
+          <p><b>Nombre y Apellido:</b> {{ jefe.nombre }} {{ jefe.apellido }}</p>
+          <p><b>Legajo:</b> {{ jefe.legajo }}</p>
+          <div>
+            <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit" v-on:click="select(jefe.idempleado)" >Ver más</b-button>
+          </div>
+        </b-card>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import NavbarPerfil from '../components/NavbarPerfil'
 import Header from '../components/Header'
 export default {
@@ -27,6 +37,36 @@ export default {
   components: {
     NavbarPerfil,
     Header
+  },
+  data () {
+    return {
+      jefes: null,
+      err: false
+    }
+  },
+  mounted () {
+    axios
+      .get('http://localhost:3000/jefes', {headers: { "user_token": sessionStorage.token }})
+      .then(response => (this.jefes = response.data))
+      .catch(error => {
+        console.log(error)
+      })
+  },
+  methods: {
+    select(id){
+      this.$router.push('/vistajefe/'+id);
+    },
+    search(){
+      axios.post('http://localhost:3000/buscarjefe', {nombre: this.nombre, apellido: this.apellido}, {headers: { "user_token": sessionStorage.token }})
+        .then(response => {
+          this.jefes = response.data;
+          console.log(response);
+          this.err = false;
+        })
+        .catch(e => {
+          this.err = true;
+        });
+    }
   }
 }
 </script>

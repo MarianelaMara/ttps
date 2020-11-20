@@ -9,7 +9,6 @@ checkToken = (req, res, next) => {
         });
     };
     const token = req.headers['user_token'];
-    console.log(token);
     let payload = null
     try {
         payload = jwt.decode(token, config.llave)

@@ -4,7 +4,6 @@ const Personal = require("../models/personal.model.js");
 exports.findOne = (req, res) => {
     const { username, password } = req.body;
     Personal.login(username, password, (err, data) => {
-      console.log(username, password);
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
@@ -32,5 +31,89 @@ exports.getAllJefes = (req, res) => {
           });
         }
       } else res.json(data);
+    });
+};
+
+exports.getJefe = (req, res) => {
+  const  id = req.params.id;
+  Personal.getJefe(id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving  "
+          });
+        }
+      } else res.send(data);
+    });
+};
+
+exports.getAllMedicos = (req, res) => {
+  Personal.getAllMedicos((err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving  "
+          });
+        }
+      } else res.json(data);
+    });
+};
+
+exports.getMedico = (req, res) => {
+  const  id = req.params.id;
+  Personal.getMedico(id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving  "
+          });
+        }
+      } else res.send(data);
+    });
+};
+
+exports.getMedicoBuscar = (req, res) => {
+  const  {nombre, apellido} = req.body;
+  Personal.getMedicoBuscar(nombre, apellido, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving  "
+          });
+        }
+      } else res.send(data);
+    });
+};
+
+exports.getJefeBuscar = (req, res) => {
+  const  {nombre, apellido} = req.body;
+  Personal.getJefeBuscar(nombre, apellido, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving  "
+          });
+        }
+      } else res.send(data);
     });
 };

@@ -2,14 +2,10 @@
   <div>
     <Header></Header>
     <NavbarPerfil></NavbarPerfil>
-    <div>      
-       <b-card
-    no-body
-    style="max-width: 20rem;"
-    img-src="https://placekitten.com/380/200"
-    img-alt="Image"
-    img-top
-  >
+    <div>    
+       {{ $route.params.id }}  
+       {{ nombre }}
+       <b-card>
     <template #header>
       <h4 class="mb-0">Hello World</h4>
     </template>
@@ -36,7 +32,7 @@
 
     <b-card-footer>This is a footer</b-card-footer>
 
-    <b-card-img src="https://placekitten.com/480/210" alt="Image" bottom></b-card-img>
+    
   </b-card>
     </div>
   </div>
@@ -45,11 +41,43 @@
 <script>
 import NavbarPerfil from '../components/NavbarPerfil'
 import Header from '../components/Header'
+import axios from 'axios';
 export default {
-  name: 'BuscarJefe',
+  name: 'VistaJefe',
   components: {
     NavbarPerfil,
     Header
+  },
+  data () {
+    return {
+      nombre: "",
+      apellido: "",
+      dni:"",
+      domicilio:"",
+      fechanac:"",
+      telefono:"",
+      email:"",
+      legajo:"",
+
+      err: false
+    }
+  },
+  mounted () {
+    axios
+      .get('http://localhost:3000/jefe/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
+      .then(response => {
+        this.nombre = response.data.nombre,
+        this.apellido = response.data.apellido,
+        this.dni = response.data.dni,
+        this.domicilio = response.data.domicilio,
+        this.fechanac = response.data.fechanac,
+        this.telefono = response.data.telefono,
+        this.email = response.data.email,
+        this.legajo = response.data.legajo
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 }
 </script>
