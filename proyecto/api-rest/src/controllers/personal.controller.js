@@ -17,7 +17,22 @@ exports.findOne = (req, res) => {
         } else res.send(data);
       });
 };
-
+exports.getEmpleado = (req, res) => {
+  const  id = req.params.id;
+  Personal.getEmpleado(id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving  "
+          });
+        }
+      } else res.send(data);
+    });
+};
 exports.getAllJefes = (req, res) => {
   Personal.getAllJefes((err, data) => {
       if (err) {
@@ -31,23 +46,6 @@ exports.getAllJefes = (req, res) => {
           });
         }
       } else res.json(data);
-    });
-};
-
-exports.getJefe = (req, res) => {
-  const  id = req.params.id;
-  Personal.getJefe(id, (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error retrieving  "
-          });
-        }
-      } else res.send(data);
     });
 };
 
@@ -66,24 +64,6 @@ exports.getAllMedicos = (req, res) => {
       } else res.json(data);
     });
 };
-
-exports.getMedico = (req, res) => {
-  const  id = req.params.id;
-  Personal.getMedico(id, (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error retrieving  "
-          });
-        }
-      } else res.send(data);
-    });
-};
-
 exports.getMedicoBuscar = (req, res) => {
   const  {nombre, apellido} = req.body;
   Personal.getMedicoBuscar(nombre, apellido, (err, data) => {

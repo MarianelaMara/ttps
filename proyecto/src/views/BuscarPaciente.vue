@@ -5,22 +5,21 @@
     <div class="search">
         <b-navbar type="light" variant="light">
             <b-nav-form @submit.prevent="search">
-                <b-form-input v-model="nombre" class="mr-sm-2" placeholder="Nombre" required></b-form-input>
-                <b-form-input v-model="apellido" class="mr-sm-2" placeholder="Apellido" required></b-form-input>
+                <b-form-input v-model="dni" class="mr-sm-2" placeholder="DNI" required></b-form-input>
                 <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit">Buscar</b-button>
             </b-nav-form>
         </b-navbar>
     </div>
     <div v-if="err">
-      <p>No se encontro jefe</p>
+      <p>No se encontro Paciente</p>
     </div>
     <div v-else>
-      <div v-for="jefe in jefes"  v-bind:my="jefe" v-bind:key="jefe.idempleado">
+      <div v-for="paciente in pacientes"  v-bind:my="paciente" v-bind:key="paciente.idpaciente">
         <b-card>
-          <p><b>Nombre y Apellido:</b> {{ jefe.nombre }} {{ jefe.apellido }}</p>
-          <p><b>Legajo:</b> {{ jefe.legajo }}</p>
+          <p><b>Nombre y Apellido:</b> {{ paciente.nombre }} {{ paciente.apellido }}</p>
+          <p><b>DNI:</b> {{ paciente.dni }}</p>
           <div>
-            <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit" v-on:click="select(jefe.idempleado)" >Ver más</b-button>
+            <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit" v-on:click="select(paciente.idpaciente)" >Ver más</b-button>
           </div>
         </b-card>
       </div>
@@ -33,36 +32,35 @@ import axios from 'axios';
 import NavbarPerfil from '../components/NavbarPerfil'
 import Header from '../components/Header'
 export default {
-  name: 'BuscarJefe',
+  name: 'BuscarPaciente',
   components: {
     NavbarPerfil,
     Header
   },
   data () {
     return {
-      jefes: null,
-      nombre:"",
-      apellido:"",
+      pacientes: null,
+      dni:"",
       err: false
     }
   },
   mounted () {
     axios
-      .get('http://localhost:3000/jefes', {headers: { "user_token": sessionStorage.token }})
-      .then(response => (this.jefes = response.data))
+      .get('http://localhost:3000/pacientes', {headers: { "user_token": sessionStorage.token }})
+      .then(response => (this.pacientes = response.data))
       .catch(error => {
         console.log(error)
       })
   },
   methods: {
     select(id){
-      this.$router.push('/vistaEmpleado/'+id);
+      this.$router.push('/vistaPaciente/'+id);
+      console.log(id);
     },
     search(){
-      axios.post('http://localhost:3000/buscarjefe', {nombre: this.nombre, apellido: this.apellido}, {headers: { "user_token": sessionStorage.token }})
+      axios.post('http://localhost:3000/buscarpaciente', {dni: this.dni}, {headers: { "user_token": sessionStorage.token }})
         .then(response => {
-          this.jefes = response.data;
-          console.log(response);
+          this.pacientes = response.data;
           this.err = false;
         })
         .catch(e => {

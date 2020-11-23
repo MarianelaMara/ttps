@@ -30,11 +30,8 @@ export default {
     login(){     
         axios.post('http://localhost:3000/login', {username: this.username, password: this.password})
         .then(response => {
-          sessionStorage.setItem('nombre',response.data.nombre);
-          sessionStorage.setItem('apellido',response.data.apellido);
           sessionStorage.setItem('token',response.data.token);
-          sessionStorage.setItem('rol',response.data.rol);
-          sessionStorage.setItem('idsistema',response.data.idsistema);
+          sessionStorage.setItem('idempleado',response.data.idempleado);
           this.$router.push('/home');
         })
         .catch(error => {

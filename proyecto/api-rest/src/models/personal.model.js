@@ -6,10 +6,6 @@ const config = require('../configs/config.js');
 // constructor
 const Personal = function(p) {
   this.token = p.token;
-  this.nombre = p.nombre;
-  this.apellido = p.apellido;
-  this.rol = p.rol;
-  this.idsistema = p.idsistema;
   this.idempleado = p.idempleado
 };
 //Método que asigna el token
@@ -32,10 +28,6 @@ Personal.login = (usuario, contraseña, result) => {
     if (res.length) {
         const personal = new Personal({
         token: createToken(res[0]),
-        nombre: res[0].nombre,
-        apellido: res[0].apellido,
-        rol: res[0].rol,
-        idsistema: res[0].idsistema,
         idempleado: res[0].idempleado
       });
       result(null, personal);
@@ -60,21 +52,6 @@ Personal.getAllJefes = (result) => {
   });
 };
 
-Personal.getJefe = (id, result) => {
-  sql.query('SELECT * FROM empleado WHERE rol="jefe" AND idempleado = ' + [id], (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    } 
-    if (res.length) {
-      result(null, res);
-      return;
-    }
-    // not found Jefe with the id
-    result({ kind: "not_found" }, null);
-  });
-};
 //método que devuelve el jefe de sistema ingresado
 Personal.getJefeSistema = (idsistema, result) => {
   sql.query('SELECT idempleado FROM empleado WHERE rol="jefe" AND idsistema = ' + [idsistema], (err, res) => {
@@ -107,17 +84,17 @@ Personal.getAllMedicos = (result) => {
   });
 };
 
-Personal.getMedico = (id, result) => {
-  sql.query('SELECT * FROM empleado WHERE rol="medico" AND idempleado = ' + [id], (err, res) => {
+Personal.getEmpleado = (id, result) => {
+  sql.query('SELECT * FROM empleado  WHERE idempleado= "' + [id]+'"', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }if (res.length) {
-      result(null, res);
+      result(null, res[0]);
       return;
     }
-    // not found Medico with the id
+    // not found Empleado with the id
     result({ kind: "not_found" }, null);
   });
 };

@@ -12,6 +12,68 @@ exports.getSalas = (req, res) => {
         } else res.send(data);
       });
 };
+//devuelve el nombre de una sala
+exports.getNombreSala = (req, res) => {
+  const  id = req.params.id;
+  Sistema.getNombreSala(id, (err, data) => {
+      if (err) {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+      } else res.send(data);
+    });
+};
+//devuelve la cantidad de salas de un siste,a
+exports.getCantidadSalas = (req, res) => {
+  const  id = req.params.id;
+  Sistema.getCantidadSalas(id, (err, data) => {
+      if (err) {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+      } else res.send(data);
+  });
+};
+//devuelve la cantidad total de camas de un sistema
+exports.getCantidadCamasSistema = (req, res) => {
+  const  id = req.params.id;
+  Sistema.getCantidadCamasSistema(id, (err, data) => {
+      if (err) {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+      } else res.send(data);
+  });
+};
+//devuelve la cantidad de camas ocupadas de un sistema
+exports.getCantidadCamasOcupadasSistema = (req, res) => {
+  const  id = req.params.id;
+  Sistema.getCantidadCamasOcupadasSistema(id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `No hay camas ocupadas en el sistema`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+        }
+      } else res.send(data);
+  });
+};
+
+//devuelve el nombre del sistema
+exports.getSistema = (req, res) => {
+  const  id = req.params.id;
+  Sistema.getSistema(id, (err, data) => {
+      if (err) {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+      } else res.send(data);
+    });
+};
 //devuelve las camas de un sala
 exports.getCamas = (req, res) => {
   const  id = req.params.id;
@@ -22,6 +84,34 @@ exports.getCamas = (req, res) => {
           });
       } else res.send(data);
     });
+};
+//devuelve la cantidad de camas de una sala
+exports.getCantidadCamas = (req, res) => {
+  const  id = req.params.id;
+  Sistema.getCantidadCamas(id, (err, data) => {
+      if (err) {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+      } else res.send(data);
+  });
+};
+//devuelve la cantidad de camas ocupadas de una sala
+exports.getCantidadCamasOcupadas = (req, res) => {
+  const  id = req.params.id;
+  Sistema.getCantidadCamasOcupadas(id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `No hay camas ocupadas`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+        }
+      } else res.send(data);
+  });
 };
 //cambia de sistema a un paciente, consulta si hay cama libre en el sistema al que lo quiere cambiar
 //Si hay cama libre, la ocupa, desocupa la cama anterior

@@ -40,7 +40,7 @@ Paciente.getPaciente = (id, result) => {
         return;
       } 
       if (res.length) {
-        result(null, res);
+        result(null, res[0]);
         return;
       }
       // not found Paciente with the id

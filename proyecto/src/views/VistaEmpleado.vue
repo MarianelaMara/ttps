@@ -3,36 +3,25 @@
     <Header></Header>
     <NavbarPerfil></NavbarPerfil>
     <div>    
-       {{ $route.params.id }}  
-       {{ nombre }}
-       <b-card>
-    <template #header>
-      <h4 class="mb-0">Hello World</h4>
-    </template>
-
-    <b-card-body>
-      <b-card-title>Card Title</b-card-title>
-      <b-card-sub-title class="mb-2">Card Sub Title</b-card-sub-title>
-      <b-card-text>
-        Some quick example text to build on the card title and make up the bulk of the card's
-        content.
-      </b-card-text>
-    </b-card-body>
-
-    <b-list-group flush>
-      <b-list-group-item>Cras justo odio</b-list-group-item>
-      <b-list-group-item>Dapibus ac facilisis in</b-list-group-item>
-      <b-list-group-item>Vestibulum at eros</b-list-group-item>
-    </b-list-group>
+      <b-card>
+        <template #header>
+         <h4 class="mb-0">{{ nombre }} {{ apellido }}</h4>
+        </template>
+        <b-list-group flush>
+          <b-list-group-item><b>Sistema asignado:</b> {{ sistema }}</b-list-group-item>
+          <b-list-group-item><b>Legajo:</b> {{ legajo }}</b-list-group-item>
+          <b-list-group-item><b>DNI:</b> {{ dni }}</b-list-group-item>
+          <b-list-group-item><b>Domicilio:</b> {{ domicilio }}</b-list-group-item>
+          <b-list-group-item><b>Fecha de nacimiento:</b> {{ fechanac }}</b-list-group-item>
+          <b-list-group-item><b>Teléfono:</b> {{ telefono }}</b-list-group-item>
+          <b-list-group-item><b>Email:</b> {{ email }}</b-list-group-item>
+        </b-list-group>
 
     <b-card-body>
       <a href="#" class="card-link">Card link</a>
       <a href="#" class="card-link">Another link</a>
     </b-card-body>
-
-    <b-card-footer>This is a footer</b-card-footer>
-
-    
+  
   </b-card>
     </div>
   </div>
@@ -58,13 +47,14 @@ export default {
       telefono:"",
       email:"",
       legajo:"",
-
+      idsistema:"",
+      sistema:"",
       err: false
     }
   },
   mounted () {
     axios
-      .get('http://localhost:3000/jefe/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
+      .get('http://localhost:3000/empleado/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
       .then(response => {
         this.nombre = response.data.nombre,
         this.apellido = response.data.apellido,
@@ -73,11 +63,17 @@ export default {
         this.fechanac = response.data.fechanac,
         this.telefono = response.data.telefono,
         this.email = response.data.email,
-        this.legajo = response.data.legajo
+        this.legajo = response.data.legajo,
+        this.idsistema = response.data.idsistema,
+        //this.sistema = response.data.nombresistema
+        axios.get('http://localhost:3000/sistema/'+ this.idsistema, {headers: { "user_token": sessionStorage.token }})
+          .then(response => {
+          this.sistema = response.data.nombresistema
+        })
       })
       .catch(error => {
         console.log(error)
-      })
+    });
   }
 }
 </script>

@@ -12,15 +12,15 @@
         </b-navbar>
     </div>
     <div v-if="err">
-      <p>No se encontro jefe</p>
+      <p>No se encontro médico</p>
     </div>
     <div v-else>
-      <div v-for="jefe in jefes"  v-bind:my="jefe" v-bind:key="jefe.idempleado">
+      <div v-for="medico in medicos"  v-bind:my="medico" v-bind:key="medico.idempleado">
         <b-card>
-          <p><b>Nombre y Apellido:</b> {{ jefe.nombre }} {{ jefe.apellido }}</p>
-          <p><b>Legajo:</b> {{ jefe.legajo }}</p>
+          <p><b>Nombre y Apellido:</b> {{ medico.nombre }} {{ medico.apellido }}</p>
+          <p><b>Legajo:</b> {{ medico.legajo }}</p>
           <div>
-            <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit" v-on:click="select(jefe.idempleado)" >Ver más</b-button>
+            <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit" v-on:click="select(medico.idempleado)" >Ver más</b-button>
           </div>
         </b-card>
       </div>
@@ -33,14 +33,14 @@ import axios from 'axios';
 import NavbarPerfil from '../components/NavbarPerfil'
 import Header from '../components/Header'
 export default {
-  name: 'BuscarJefe',
+  name: 'BuscarMedico',
   components: {
     NavbarPerfil,
     Header
   },
   data () {
     return {
-      jefes: null,
+      medicos: null,
       nombre:"",
       apellido:"",
       err: false
@@ -48,8 +48,8 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:3000/jefes', {headers: { "user_token": sessionStorage.token }})
-      .then(response => (this.jefes = response.data))
+      .get('http://localhost:3000/medicos', {headers: { "user_token": sessionStorage.token }})
+      .then(response => (this.medicos = response.data))
       .catch(error => {
         console.log(error)
       })
@@ -59,9 +59,9 @@ export default {
       this.$router.push('/vistaEmpleado/'+id);
     },
     search(){
-      axios.post('http://localhost:3000/buscarjefe', {nombre: this.nombre, apellido: this.apellido}, {headers: { "user_token": sessionStorage.token }})
+      axios.post('http://localhost:3000/buscarmedico', {nombre: this.nombre, apellido: this.apellido}, {headers: { "user_token": sessionStorage.token }})
         .then(response => {
-          this.jefes = response.data;
+          this.medicos = response.data;
           console.log(response);
           this.err = false;
         })

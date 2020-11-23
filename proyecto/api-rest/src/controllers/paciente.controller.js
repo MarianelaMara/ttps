@@ -35,7 +35,6 @@ exports.getPaciente = (req, res) => {
 };
 exports.getPacienteDni = (req, res) => {
   const  dni = req.body.dni;
-  console.log(dni);
   Paciente.getPacienteDni(dni, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
