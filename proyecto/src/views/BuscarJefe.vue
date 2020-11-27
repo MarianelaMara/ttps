@@ -12,7 +12,8 @@
         </b-navbar>
     </div>
     <div v-if="err">
-      <p>No se encontro jefe</p>
+          <b-alert show dismissible variant="danger">No se encontro jefe.
+          </b-alert>
     </div>
     <div v-else>
       <div v-for="jefe in jefes"  v-bind:my="jefe" v-bind:key="jefe.idempleado">

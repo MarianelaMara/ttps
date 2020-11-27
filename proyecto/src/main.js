@@ -4,6 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import ToggleButton from 'vue-js-toggle-button'
+ 
+Vue.use(ToggleButton)
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)

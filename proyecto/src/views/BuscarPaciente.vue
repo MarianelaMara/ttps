@@ -11,7 +11,8 @@
         </b-navbar>
     </div>
     <div v-if="err">
-      <p>No se encontro Paciente</p>
+          <b-alert show dismissible variant="danger">No se encuentra registrado ese DNI.
+          </b-alert>
     </div>
     <div v-else>
       <div v-for="paciente in pacientes"  v-bind:my="paciente" v-bind:key="paciente.idpaciente">
@@ -55,7 +56,6 @@ export default {
   methods: {
     select(id){
       this.$router.push('/vistaPaciente/'+id);
-      console.log(id);
     },
     search(){
       axios.post('http://localhost:3000/buscarpaciente', {dni: this.dni}, {headers: { "user_token": sessionStorage.token }})

@@ -1,4 +1,5 @@
 const sql = require("../database.js");
+const moment = require('moment');
 
 
 const Evolucion = function(p) {
@@ -35,6 +36,7 @@ const Evolucion = function(p) {
 };
 
 Evolucion.getEvolucion = (id, result) => {
+  //select DATE_FORMAT (fecha, '% d /% m /% y') 
     sql.query('SELECT * FROM evolucion WHERE idinternacion = ' + [id] + ' ORDER BY fecha', (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -46,6 +48,21 @@ Evolucion.getEvolucion = (id, result) => {
         return;
       }
       // not found Internacion with the id
+      result({ kind: "not_found" }, null);
+    });
+};
+Evolucion.getUltimaEvolucion = (id, result) => {
+    sql.query('SELECT * FROM evolucion WHERE idinternacion = ' + [id] + ' ORDER BY idevolucion DESC LIMIT 1', (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      } 
+      if (res.length) {
+        result(null, res[0]);
+        return;
+      }
+      // not found Evoluciones with the id
       result({ kind: "not_found" }, null);
     });
 };
@@ -65,8 +82,10 @@ Evolucion.getEvolucionesysistemas = (id, result) => {
   });
 };
   
-Evolucion.addEvolucion = (idsistema, idinternacion,idpersonal, fecha, hora, temperatura, tasistolica, tadiastolica, fc, fr, mecanicaventilatoria, oxigeno, tipo, litros, porcentaje, saturacion, pafi, valorpafi, pronovigil, tos, disnea, estabilidad, somnolencia, anosmia, disgeusia, observacion, arm, armdescripcion, traqueotomia, vasopresores, vasopresoresdescripcion,   result) => {
-  sql.query('INSERT INTO evolucion (`idinternacion`, `idpersonal`, `fecha`, `hora`, `temperatura`, `tasistolica`, `tadiastolica`, `fc`, `fr`, `mecanicaventilatoria`, `oxigeno`, `tipo`, `litros`, `porcentaje`, `saturacion`, `pafi`, `valorpafi`, `pronovigil`, `tos`, `disnea`, `estabilidad`, `somnolencia`, `anosmia`, `disgeusia`, `observacion`, `arm`, `armdescripcion`, `traqueotomia`, `vasopresores`, `vasopresoresdescripcion`, `idsistema`) VALUES ("' + [idinternacion] + '", " ' +[idpersonal]+'", "' + [fecha] + '", "' + [hora] + '", "' + [temperatura] + '", "' + [tasistolica] +'", "' + [tadiastolica] +'", "' + [fc] +'", "' + [fr] +'", "' + [mecanicaventilatoria] +'", "' + [oxigeno] +'", "' + [tipo] +'", "' + [litros] +'", "' + [porcentaje] +'", "' + [saturacion] +'", "' + [pafi] +'", "' + [valorpafi] +'", "' + [pronovigil] +'", "' + [tos] +'", "' + [disnea] +'", "' + [estabilidad] +'", "' + [somnolencia] +'", "' + [anosmia] +'", "' + [disgeusia] +'", "' + [observacion] +'", "' + [arm] +'", "' + [armdescripcion] +'", "' + [traqueotomia] +'", "' + [vasopresores] +'", "' + [vasopresoresdescripcion] +'", "' +[idsistema]+'")' , (err, res) => {
+Evolucion.addEvolucion = (idsistema, idinternacion,idpersonal, temperatura, tasistolica, tadiastolica, fc, fr, mecanicaventilatoria, oxigeno, tipo, litros, porcentaje, saturacion, pafi, valorpafi, pronovigil, tos, disnea, estabilidad, somnolencia, anosmia, disgeusia, observacion, arm, armdescripcion, traqueotomia, vasopresores, vasopresoresdescripcion,   result) => {
+  var fecha = new Date();
+  var hora = moment().format('LT');
+    sql.query('INSERT INTO evolucion (`idinternacion`, `idempleado`, `fecha`, `hora`, `temperatura`, `tasistolica`, `tadiastolica`, `fc`, `fr`, `mecanicaventilatoria`, `oxigeno`, `tipo`, `litros`, `porcentaje`, `saturacion`, `pafi`, `valorpafi`, `pronovigil`, `tos`, `disnea`, `estabilidad`, `somnolencia`, `anosmia`, `disgeusia`, `observacion`, `arm`, `armdescripcion`, `traqueotomia`, `vasopresores`, `vasopresoresdescripcion`, `idsistema`) VALUES ("' + [idinternacion] + '", "' +[idpersonal]+'", CURDATE() , TIME(NOW()), "' + [temperatura] + '", "' + [tasistolica] +'", "' + [tadiastolica] +'", "' + [fc] +'", "' + [fr] +'", "' + [mecanicaventilatoria] +'", ' + [oxigeno] +', "' + [tipo] +'", "' + [litros] +'", "' + [porcentaje] +'", "' + [saturacion] +'", ' + [pafi] +', "' + [valorpafi] +'", ' + [pronovigil] +', ' + [tos] +', "' + [disnea] +'", ' + [estabilidad] +', ' + [somnolencia] +', ' + [anosmia] +', ' + [disgeusia] +', "' + [observacion] +'", ' + [arm] +', "' + [armdescripcion] +'", ' + [traqueotomia] +', ' + [vasopresores] +', "' + [vasopresoresdescripcion] +'", "' +[idsistema]+'")' , (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

@@ -9,17 +9,18 @@ const Internacion = function(p) {
   this.enfermedadactual = p.enfermedadactual;
   this.fechaegreso = p.fechaegreso;
   this.fechaobito = p.fechaobito;
+  this.estado = p.estado;
 };
 
 Internacion.getInternacion = (id, result) => {
-    sql.query('SELECT * FROM internacion WHERE idpaciente = ' + [id], (err, res) => {
+    sql.query('SELECT * FROM internacion WHERE idpaciente='+ [id]+' AND estado="activo" ORDER BY fecha DESC LIMIT 1', (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
         return;
       } 
       if (res.length) {
-        result(null, res);
+        result(null, res[0]);
         return;
       }
       // not found Internacion with the id
@@ -27,41 +28,19 @@ Internacion.getInternacion = (id, result) => {
     });
 };
   
-Internacion.addInternacion = (idpaciente, fechaactual,fechasintomas, fechadiagnostico, enfermedadactual,  result) => {
-  sql.query('INSERT INTO internacion (`idpaciente`, `fecha`, `fechasintomas`, `fechadiagnostico`, `enfermedadactual`) VALUES ("' + [idpaciente] + '", " ' +[fechaactual]+'", "' + [fechasintomas] + '", "' + [fechadiagnostico] + '", "' + [enfermedadactual] +'")' , (err, res) => {
+Internacion.addInternacion = (idpaciente, fechasintomas, fechadiagnostico, enfermedadactual,  result) => {
+  if(fechadiagnostico === ''){ fechadiagnostico = 'NULL'}
+  sql.query('INSERT INTO internacion (`idpaciente`, `fecha`, `fechasintomas`, `fechadiagnostico`, `enfermedadactual`,  `estado`) VALUES ("' + [idpaciente] + '", CURDATE(), "' + [fechasintomas] + '", ' + [fechadiagnostico] + ', "' + [enfermedadactual] +'", "activo")' , (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     } 
     else {
-      const internacion = new Internacion({
-        fecha: fechaactual,
-        fechasintomas: fechasintomas,
-        fechadiagnostico: fechadiagnostico,
-        enfermedadactual: enfermedadactual,
-      });
-      result(null, internacion);
+      result(null, res);
       return;
     }
 });
 };
-
-Internacion.getInternacion = (id, result) => {
-  sql.query('SELECT * FROM internacion WHERE idpaciente = ' + [id], (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    } 
-    if (res.length) {
-      result(null, res);
-      return;
-    }
-    // not found Paciente with the id
-    result({ kind: "not_found" }, null);
-  });
-};
-
 
 module.exports = Internacion;

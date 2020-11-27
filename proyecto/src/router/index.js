@@ -9,6 +9,9 @@ import VistaEmpleado from '@/views/VistaEmpleado'
 import VistaPaciente from '@/views/VistaPaciente'
 import Sistema from '@/views/VistaSistema'
 import Sala from '@/views/VistaSala'
+import Evoluciones from '@/views/Evoluciones'
+import AgregarEvolucion from '@/views/AgregarEvolucion'
+import AgregarInternacion from '@/views/AgregarInternacion'
 
 Vue.use(Router)
 
@@ -75,6 +78,21 @@ export default new Router({
       name: 'Sala',
       component: Sala,
       beforeEnter: authorization
+    },
+    {
+      path: '/evoluciones/:id',
+      name: 'Evoluciones',
+      component: Evoluciones
+    },
+    {
+      path: '/agregarevolucion/:id',
+      name: 'AgregarEvolucion',
+      component: AgregarEvolucion
+    },
+    {
+      path: '/agregarinternacion/:id',
+      name: 'AgregarInternacion',
+      component: AgregarInternacion
     }
   ]
 })

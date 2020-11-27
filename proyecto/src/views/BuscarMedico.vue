@@ -12,7 +12,8 @@
         </b-navbar>
     </div>
     <div v-if="err">
-      <p>No se encontro médico</p>
+          <b-alert show dismissible variant="danger">No se encontro medico.
+          </b-alert>
     </div>
     <div v-else>
       <div v-for="medico in medicos"  v-bind:my="medico" v-bind:key="medico.idempleado">

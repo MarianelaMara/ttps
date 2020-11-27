@@ -9,14 +9,14 @@
           <b-navbar-brand tag="h4" class="mb-0">{{ nombre }} {{ apellido}}</b-navbar-brand>
           <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_collapse">
-          <b-navbar-nav class="ml-auto">
-              <b-nav-item href="#">Agregar internación</b-nav-item>
-              <b-nav-item href="#">Agregar evolución</b-nav-item>
-              <b-nav-item href="#">Asignar médico</b-nav-item>
+          <b-navbar-nav class="ml-auto" v-bind:key="mismosistema" v-if="mismosistema">
+              <b-nav-item href="#" v-bind:key="tieneinternacion" v-bind:idpaciente="idpaciente" v-if="tieneinternacion === false"  v-on:click="agregarinternacion(idpaciente)">Agregar internación</b-nav-item>
+              <b-nav-item href="#" v-else v-bind:key="idpaciente" v-on:click="agregarevolucion(idpaciente)">Agregar evolución</b-nav-item>
+              <b-nav-item href="#" v-bind:key="rol" v-if="rol === 'jefe'">Asignar médico</b-nav-item>
               <b-nav-item href="#">Obito</b-nav-item>
               <b-nav-item href="#">Alta médico</b-nav-item>
               <b-nav-item-dropdown text="Evoluciones" right>
-                <b-dropdown-item href="">Ver evoluciones</b-dropdown-item>
+                <b-dropdown-item href="" v-bind:key="idpaciente" v-on:click="verevoluciones(idpaciente)">Ver evoluciones</b-dropdown-item>
                 <b-dropdown-item href="">Ver evoluciones y sistemas</b-dropdown-item>
               </b-nav-item-dropdown> 
               <b-nav-item-dropdown text="Cambiar de sistema" right>
@@ -76,13 +76,18 @@ export default {
       telefonocontacto:"",
       parentesco:"",
       idsistema: "",
-      sistema: ""
+      sistema: "",
+      idpaciente: "",
+      mismosistema: false,
+      rol: "",
+      tieneinternacion: false
     }
   },
   mounted () {
     axios
       .get('http://localhost:3000/paciente/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
       .then(response => {
+        this.idpaciente = response.data.idpaciente,
         this.nombre = response.data.nombre,
         this.apellido = response.data.apellido,
         this.dni = response.data.dni,
@@ -100,8 +105,36 @@ export default {
         })
       })
       .catch(error => {
-        console.log(error)
     });
+    axios
+      .get('http://localhost:3000/empleado/'+ sessionStorage.idempleado, {headers: { "user_token": sessionStorage.token }})
+      .then(response => {
+        if(response.data.idsistema === this.idsistema){
+          this.mismosistema = true;
+          this.rol = response.data.rol
+        }
+      })
+      .catch(error => {
+    });
+     axios
+      .get('http://localhost:3000/internacion/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
+      .then(response => {
+        this.tieneinternacion = true;
+      })
+      .catch(error => {
+        console.log(" ");
+    });
+  },
+  methods: {
+      verevoluciones(id) {
+          this.$router.push('/evoluciones/'+id);
+      },
+      agregarevolucion(id) {
+          this.$router.push('/agregarEvolucion/'+id);
+      },
+      agregarinternacion(id) {
+          this.$router.push('/agregarInternacion/'+id);
+      }
   }
 }
 </script>
