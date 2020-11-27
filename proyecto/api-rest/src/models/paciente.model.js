@@ -72,7 +72,6 @@ Paciente.addPaciente = (dni, nombre, apellido, domicilio, fechanac, telefono,ant
       return;
     } 
     else {
-      console.log(res);
       const paciente = new Paciente({
         idpaciente: res.insertId,
         nombre: nombre,

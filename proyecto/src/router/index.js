@@ -12,6 +12,7 @@ import Sala from '@/views/VistaSala'
 import Evoluciones from '@/views/Evoluciones'
 import AgregarEvolucion from '@/views/AgregarEvolucion'
 import AgregarInternacion from '@/views/AgregarInternacion'
+import AgregarPaciente from '@/views/AgregarPaciente'
 
 Vue.use(Router)
 
@@ -93,6 +94,11 @@ export default new Router({
       path: '/agregarinternacion/:id',
       name: 'AgregarInternacion',
       component: AgregarInternacion
+    },
+    {
+      path: '/agregarPaciente',
+      name: 'AgregarPaciente',
+      component: AgregarPaciente
     }
   ]
 })

@@ -24,15 +24,15 @@ function createPaciente(data) {
     const schema = yup.object().shape({
         nombre: yup.string().matches(/^[a-zA-Z]+$/).required(),
         apellido: yup.string().matches(/^[a-zA-Z]+$/).required(),
-        dni: yup.number().integer().required(),
+        dni: yup.string().matches(/^\d+$/).required(),
         domicilio: yup.string().required(),
         fechanac: yup.date().required(),
         telefono: yup.string().required(),
         antecedentes: yup.string(),
         obrasocial: yup.string(),
-        nombrecontacto: yup.string().matches(/^[a-zA-Z]+$/),
+        nombrecontacto: yup.string(),
         telefonocontacto: yup.string(),
-        parentesco: yup.string().matches(/^[a-zA-Z]+$/),        
+        parentesco: yup.string(),        
     });
 
     schema.validateSync(data);

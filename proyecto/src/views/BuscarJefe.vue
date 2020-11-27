@@ -63,7 +63,6 @@ export default {
       axios.post('http://localhost:3000/buscarjefe', {nombre: this.nombre, apellido: this.apellido}, {headers: { "user_token": sessionStorage.token }})
         .then(response => {
           this.jefes = response.data;
-          console.log(response);
           this.err = false;
         })
         .catch(e => {
