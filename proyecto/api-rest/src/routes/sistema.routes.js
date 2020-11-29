@@ -23,5 +23,9 @@ router.get("/camassala/:id", [middleware.checkToken], sistema.getCantidadCamas);
 router.get("/camasocupadassala/:id", [middleware.checkToken], sistema.getCantidadCamasOcupadas);
 //devuelve nombre del sistema dado un id
 router.get("/sistema/:id", [middleware.checkToken], sistema.getSistema);
+//devuelve configuracion actual de las camas de guardia, si son limitadas o ilimitadas
+router.get("/config", [middleware.checkToken], sistema.config);
+//cambiar la configuracion actual de las camas de guardia
+router.get("/cambiarconfig", [middleware.checkToken], sistema.cambiarconfig);
 
 module.exports = router;

@@ -27,6 +27,36 @@ Internacion.getInternacion = (id, result) => {
       result({ kind: "not_found" }, null);
     });
 };
+Internacion.obito = (id, result) => {
+  sql.query('UPDATE `internacion` SET `fechaobito`= CURDATE(), `estado`= "inactivo" WHERE `idinternacion`='+ [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res) {
+      result(null, res);
+      return;
+    }
+    // not se puede modificar la internacion
+    result({ kind: "not_found" }, null);
+  });
+};
+Internacion.altamedica = (id, result) => {
+  sql.query('UPDATE `internacion` SET `fechaegreso`= CURDATE(), `estado`= "inactivo" WHERE `idinternacion`='+ [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res) {
+      result(null, res);
+      return;
+    }
+    // not se puede modificar la internacion
+    result({ kind: "not_found" }, null);
+  });
+};
   
 Internacion.addInternacion = (idpaciente, fechasintomas, fechadiagnostico, enfermedadactual,  result) => {
   if(fechadiagnostico === ''){ fechadiagnostico = 'NULL'}

@@ -12,6 +12,32 @@ exports.getSalas = (req, res) => {
         } else res.send(data);
       });
 };
+//devuelve la configuracion actual de las camas de guardia
+exports.config = (req, res) => {
+  Sistema.config((err, data) => {
+      if (err) {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+      } else res.send(data);
+    });
+};
+//cambia la configuracion actual de las camas de guardia
+exports.cambiarconfig = (req, res) => {
+  Sistema.cambiarconfig((err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No se pude cambiar la configuración`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error servidor  "
+        });
+      }
+    } else res.send(data);
+  });
+};
 //devuelve el nombre de una sala
 exports.getNombreSala = (req, res) => {
   const  id = req.params.id;

@@ -13,7 +13,35 @@ const Cama = function(a) {
   }
   else this.estado = "ocupada"
 }
+Sistema.cambiarconfig = (result) => {
 
+  sql.query('UPDATE sistema SET camasinfinitas= !camasinfinitas WHERE idsistema= 1', (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res) {
+      result(null, res);
+      return;
+    }
+    // not se puede modificar la configuracion
+    result({ kind: "not_found" }, null);
+  });
+};
+Sistema.config = (result) => {
+  sql.query('SELECT camasinfinitas FROM sistema WHERE idsistema= 1', (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) {
+      result(null, res[0]);
+      return;
+    }
+  });
+};
 Sistema.getSalas = (id, result) => {
     sql.query('SELECT * FROM sala WHERE idsistema= ' + [id], (err, res) => {
       if (err) {

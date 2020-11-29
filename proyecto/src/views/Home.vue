@@ -2,6 +2,10 @@
   <div>
     <Header></Header>
     <Navbar></Navbar>
+    <div class="body">
+      <p></p>
+      <p></p>
+      <p></p></div>
   </div>
 </template>
 
@@ -16,12 +20,5 @@ export default {
   }
 }
 </script>
-
 <style>
-body {
-  
-  width: 100%;
-  height: 100%;
-}
-
 </style>

@@ -27,3 +27,35 @@ exports.getInternacion = (req, res) => {
         } else res.send(data);
       });
 };
+exports.obito = (req, res) => {
+  const  id = req.body.id;
+  Internacion.obito(id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `No se pudo dar alta por obito`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+        }
+      } else res.send(data);
+    });
+};
+exports.altamedica = (req, res) => {
+  const  id = req.body.id;
+  Internacion.altamedica(id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `No se pudo dar alta por obito`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error servidor  "
+          });
+        }
+      } else res.send(data);
+    });
+};

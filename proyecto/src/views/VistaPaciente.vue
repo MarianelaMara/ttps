@@ -2,31 +2,45 @@
   <div>
     <Header></Header>
     <NavbarPerfil></NavbarPerfil>
-    <div>         
+    <div v-if="exitoobito">
+          <b-alert show dismissible variant="success">Se realizó el alta por obito.
+          </b-alert>
+    </div>
+    <div v-else-if="exitomedica">
+          <b-alert show dismissible variant="success">Se realizó el alta médica.
+          </b-alert>
+    </div>
+    <div v-else>         
       <b-card>
         <template #header>
           <b-navbar toggleable="md">
           <b-navbar-brand tag="h4" class="mb-0">{{ nombre }} {{ apellido}}</b-navbar-brand>
-          <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+          <b-navbar-toggle target="nav_collapse"  v-bind:key="mismosistema" v-if="mismosistema"></b-navbar-toggle>
           <b-collapse is-nav id="nav_collapse">
-          <b-navbar-nav class="ml-auto" v-bind:key="mismosistema" v-if="mismosistema">
-              <b-nav-item href="#" v-bind:key="tieneinternacion" v-bind:idpaciente="idpaciente" v-if="tieneinternacion === false"  v-on:click="agregarinternacion(idpaciente)">Agregar internación</b-nav-item>
-              <b-nav-item href="#" v-else v-bind:key="idpaciente" v-on:click="agregarevolucion(idpaciente)">Agregar evolución</b-nav-item>
-              <b-nav-item href="#" v-bind:key="rol" v-if="rol === 'jefe'">Asignar médico</b-nav-item>
-              <b-nav-item href="#">Obito</b-nav-item>
-              <b-nav-item href="#">Alta médico</b-nav-item>
-              <b-nav-item-dropdown text="Evoluciones" right>
-                <b-dropdown-item href="" v-bind:key="idpaciente" v-on:click="verevoluciones(idpaciente)">Ver evoluciones</b-dropdown-item>
-                <b-dropdown-item href="">Ver evoluciones y sistemas</b-dropdown-item>
-              </b-nav-item-dropdown> 
-              <b-nav-item-dropdown text="Cambiar de sistema" right>
-                <b-dropdown-item href="">Guardia</b-dropdown-item>
-                <b-dropdown-item href="">Piso Covid</b-dropdown-item>
-                 <b-dropdown-item href="">UTI</b-dropdown-item>
-                <b-dropdown-item href="">Domicilio</b-dropdown-item>
-                 <b-dropdown-item href="">Hotel</b-dropdown-item>
-              </b-nav-item-dropdown>
-          </b-navbar-nav>
+            <b-navbar-nav class="ml-auto" v-bind:key="mismosistema" v-if="mismosistema" >
+              <b-navbar-nav class="ml-auto" v-bind:key="tieneinternacion" v-if="tieneinternacion">
+                <b-nav-item href="#" v-on:click="agregarevolucion()">Agregar evolución</b-nav-item>
+                <b-nav-item href="#" v-bind:key="rol" v-if="rol === 'jefe'">Asignar médico</b-nav-item>
+                <b-nav-item href="#" v-b-modal.modal-sm>Obito</b-nav-item>
+                  <b-modal id="modal-sm" size="sm" title="Alta por obito" @ok="altaobito()">Confirma alta por obito</b-modal>
+                <b-nav-item href="#" v-b-modal.modal-sm>Alta médico</b-nav-item>
+                  <b-modal id="modal-sm" size="sm" title="Alta médica" @ok="altamedica()">Confirma alta médica</b-modal>
+                <b-nav-item-dropdown text="Evoluciones" right>
+                  <b-dropdown-item href="" v-on:click="verevoluciones()">Ver evoluciones</b-dropdown-item>
+                  <b-dropdown-item href="">Ver evoluciones y sistemas</b-dropdown-item>
+                </b-nav-item-dropdown> 
+                <b-nav-item-dropdown text="Cambiar de sistema" right>
+                  <b-dropdown-item href="">Guardia</b-dropdown-item>
+                  <b-dropdown-item href="">Piso Covid</b-dropdown-item>
+                  <b-dropdown-item href="">UTI</b-dropdown-item>
+                  <b-dropdown-item href="">Domicilio</b-dropdown-item>
+                  <b-dropdown-item href="">Hotel</b-dropdown-item>
+                </b-nav-item-dropdown>
+              </b-navbar-nav>
+              <b-navbar-nav class="ml-auto" v-else>
+                <b-nav-item href="#" v-bind:key="tieneinternacion" v-bind:idpaciente="idpaciente" v-if="tieneinternacion === false"  v-on:click="agregarinternacion()">Agregar internación</b-nav-item>
+              </b-navbar-nav>
+            </b-navbar-nav>
             </b-collapse>
           </b-navbar> 
         </template>
@@ -80,7 +94,11 @@ export default {
       idpaciente: "",
       mismosistema: false,
       rol: "",
-      tieneinternacion: false
+      tieneinternacion: false,
+      modalObito: false,
+      idinternacion: '',
+      exitoobito: false,
+      exitomedica: false
     }
   },
   mounted () {
@@ -120,20 +138,39 @@ export default {
       .get('http://localhost:3000/internacion/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
       .then(response => {
         this.tieneinternacion = true;
+        this.idinternacion = response.data.idinternacion
       })
       .catch(error => {
         console.log(" ");
     });
   },
   methods: {
-      verevoluciones(id) {
-          this.$router.push('/evoluciones/'+id);
+      verevoluciones() {
+          this.$router.push('/evoluciones/'+this.idpaciente);
       },
-      agregarevolucion(id) {
-          this.$router.push('/agregarEvolucion/'+id);
+      agregarevolucion() {
+          this.$router.push('/agregarEvolucion/'+this.idpaciente);
       },
-      agregarinternacion(id) {
-          this.$router.push('/agregarInternacion/'+id);
+      agregarinternacion() {
+          this.$router.push('/agregarInternacion/'+this.idpaciente);
+      },
+      altaobito() {
+        axios
+        .put('http://localhost:3000/obito', {id: this.idinternacion},{headers: { "user_token": sessionStorage.token }})
+        .then(response => {
+          this.exitoobito = true;
+        })
+        .catch(error => {
+        });
+      },
+       altamedica() {
+        axios
+        .put('http://localhost:3000/altamedica', {id: this.idinternacion},{headers: { "user_token": sessionStorage.token }})
+        .then(response => {
+          this.exitomedica = true;
+        })
+        .catch(error => {
+        });
       }
   }
 }
@@ -146,5 +183,4 @@ export default {
     align-items: center;
     justify-content: center;
 }
-
 </style>
