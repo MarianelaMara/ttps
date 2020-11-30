@@ -83,6 +83,34 @@ Personal.getAllMedicos = (result) => {
     result({ kind: "not_found" }, null);
   });
 };
+Personal.getMedicosSistema = (id, result) => {
+  sql.query('SELECT * FROM empleado WHERE rol="medico" AND idsistema='+[id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+    result({ kind: "not_found" }, null);
+  });
+};
+Personal.getMedicoAsignado = (idpaciente, idempleado, result) => {
+  sql.query('SELECT * FROM tienemedicos WHERE idpaciente= '+[idpaciente]+' AND idempleado= '+[idempleado], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+    result({ kind: "not_found" }, null);
+  });
+};
 
 Personal.getEmpleado = (id, result) => {
   sql.query('SELECT * FROM empleado  WHERE idempleado= "' + [id]+'"', (err, res) => {

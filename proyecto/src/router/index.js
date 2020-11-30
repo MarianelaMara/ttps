@@ -13,6 +13,7 @@ import Evoluciones from '@/views/Evoluciones'
 import AgregarEvolucion from '@/views/AgregarEvolucion'
 import AgregarInternacion from '@/views/AgregarInternacion'
 import AgregarPaciente from '@/views/AgregarPaciente'
+import AsignarMedico from '@/views/AsignarMedico'
 
 Vue.use(Router)
 
@@ -99,6 +100,11 @@ export default new Router({
       path: '/agregarPaciente',
       name: 'AgregarPaciente',
       component: AgregarPaciente
+    },
+    {
+      path: '/asignarMedico/:id',
+      name: 'AsignarMedico',
+      component: AsignarMedico
     }
   ]
 })

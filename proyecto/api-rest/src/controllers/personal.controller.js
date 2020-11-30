@@ -64,6 +64,23 @@ exports.getAllMedicos = (req, res) => {
       } else res.json(data);
     });
 };
+exports.getMedicosSistema = (req, res) => {
+  const  id = req.params.id;
+  Personal.getMedicosSistema(id,(err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving  "
+          });
+        }
+      } else res.json(data);
+    });
+};
+
 exports.getMedicoBuscar = (req, res) => {
   const  {nombre, apellido} = req.body;
   Personal.getMedicoBuscar(nombre, apellido, (err, data) => {
@@ -80,7 +97,22 @@ exports.getMedicoBuscar = (req, res) => {
       } else res.send(data);
     });
 };
-
+exports.getMedicoAsignado = (req, res) => {
+  const  {idpaciente, idempleado} = req.body;
+  Personal.getMedicoAsignado(idpaciente, idempleado, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving  "
+          });
+        }
+      } else res.send(data);
+    });
+};
 exports.getJefeBuscar = (req, res) => {
   const  {nombre, apellido} = req.body;
   Personal.getJefeBuscar(nombre, apellido, (err, data) => {

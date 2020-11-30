@@ -20,7 +20,7 @@
             <b-navbar-nav class="ml-auto" v-bind:key="mismosistema" v-if="mismosistema" >
               <b-navbar-nav class="ml-auto" v-bind:key="tieneinternacion" v-if="tieneinternacion">
                 <b-nav-item href="#" v-on:click="agregarevolucion()">Agregar evolución</b-nav-item>
-                <b-nav-item href="#" v-bind:key="rol" v-if="rol === 'jefe'">Asignar médico</b-nav-item>
+                <b-nav-item href="#" v-bind:key="rol" v-if="rol === 'jefe'" v-on:click="asignarmedico()">Asignar médico</b-nav-item>
                 <b-nav-item href="#" v-b-modal.modal-sm>Obito</b-nav-item>
                   <b-modal id="modal-sm" size="sm" title="Alta por obito" @ok="altaobito()">Confirma alta por obito</b-modal>
                 <b-nav-item href="#" v-b-modal.modal-sm>Alta médico</b-nav-item>
@@ -153,6 +153,9 @@ export default {
       },
       agregarinternacion() {
           this.$router.push('/agregarInternacion/'+this.idpaciente);
+      },
+      asignarmedico() {
+          this.$router.push('/asignarMedico/'+this.idpaciente);
       },
       altaobito() {
         axios
