@@ -62,6 +62,28 @@ Paciente.getPacienteDni = (dni, result) => {
     // not found Paciente with the dni
     result({ kind: "not_found" }, null);
   });
+}; 
+Paciente.asignarMedico = (idpaciente, idempleado, idjefe, result) => {
+  sql.query('DELETE FROM tienemedicos WHERE idpaciente ='+[idpaciente]+' AND idempleado= '+ [idjefe], (err, res) => {
+    if (err) {
+      console.log("error al desasignar jefe: ", err);
+      result(err, null);
+      return;
+    } 
+    else {
+      sql.query('INSERT INTO tienemedicos (idpaciente, idempleado) VALUES ('+[idpaciente]+', ' + [idempleado]+')', (err, res) => {
+        if (err) {
+          console.log("error al asignar médico: ", err);
+          result(err, null);
+          return;
+        } 
+        else {
+          result(null, res);
+          return;
+        };
+      });
+    };
+  });
 };  
 //agregar un paciente
 Paciente.addPaciente = (dni, nombre, apellido, domicilio, fechanac, telefono,antecedentes, obrasocial, nombrecontacto, parentesco, telefonocontacto, result) => {

@@ -33,6 +33,16 @@ exports.getPaciente = (req, res) => {
         } else res.send(data);
       });
 };
+exports.asignarMedico = (req, res) => {
+  const  {idpaciente, idempleado, idjefe} = req.body;
+  Paciente.asignarMedico(idpaciente, idempleado, idjefe, (err, data) => {
+    if (err) {
+      res.status(404).send({
+          message: `No se pudo asignar médico` + err
+      }); 
+    } else res.send(data);
+  });
+};
 exports.getPacienteDni = (req, res) => {
   const  dni = req.body.dni;
   Paciente.getPacienteDni(dni, (err, data) => {
