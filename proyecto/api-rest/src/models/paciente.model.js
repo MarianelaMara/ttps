@@ -64,24 +64,15 @@ Paciente.getPacienteDni = (dni, result) => {
   });
 }; 
 Paciente.asignarMedico = (idpaciente, idempleado, idjefe, result) => {
-  sql.query('DELETE FROM tienemedicos WHERE idpaciente ='+[idpaciente]+' AND idempleado= '+ [idjefe], (err, res) => {
+  sql.query('INSERT INTO tienemedicos (idpaciente, idempleado) VALUES ('+[idpaciente]+', ' + [idempleado]+')', (err, res) => {
     if (err) {
-      console.log("error al desasignar jefe: ", err);
+      console.log("error al asignar médico: ", err);
       result(err, null);
       return;
     } 
     else {
-      sql.query('INSERT INTO tienemedicos (idpaciente, idempleado) VALUES ('+[idpaciente]+', ' + [idempleado]+')', (err, res) => {
-        if (err) {
-          console.log("error al asignar médico: ", err);
-          result(err, null);
-          return;
-        } 
-        else {
-          result(null, res);
-          return;
-        };
-      });
+      result(null, res);
+      return;
     };
   });
 };  

@@ -5,7 +5,7 @@ const Alerta = function(p) {
 };
 
 Alerta.getAlertas = (id, result) => {
-    sql.query('SELECT idalerta, idpaciente, texto, fecha, vista FROM alerta INNER JOIN tienealerta ON alerta.idalerta= tienealerta.idalerta WHERE tienealerta.idempleado= ' + [id], (err, res) => {
+    sql.query('SELECT alerta.idalerta, idpaciente, texto, fecha, vista FROM alerta INNER JOIN tienealerta ON alerta.idalerta= tienealerta.idalerta WHERE tienealerta.idempleado= ' + [id], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -21,7 +21,7 @@ Alerta.getAlertas = (id, result) => {
 };
 
 Alerta.getAlertasPendientes = (id, result) => {
-    sql.query('SELECT idalerta, idpaciente, texto, fecha, vista FROM alerta INNER JOIN tienealerta ON alerta.idalerta= tienealerta.idalerta WHERE tienealerta.idempleado= ' + [id]+ ' AND alerta.vista="0"', (err, res) => {
+    sql.query('SELECT alerta.idalerta, idpaciente, texto, fecha, vista FROM alerta INNER JOIN tienealerta ON alerta.idalerta= tienealerta.idalerta WHERE tienealerta.idempleado= ' + [id]+ ' AND alerta.vista="0"', (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);

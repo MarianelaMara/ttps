@@ -1,14 +1,14 @@
 <template>
     <div>
       <div v-if="ok">
-        <b-alert show dismissible variant="danger">Se asigno el médico {{ medico.nombre }} {{ medico.apellido }} al paciente.
+        <b-alert show dismissible variant="sucess">Se asigno el médico {{ medico.nombre }} {{ medico.apellido }} al paciente.
         </b-alert>
       </div>
       <div v-else-if="err">
         <b-alert show dismissible variant="danger">No se puede asignar médico
         </b-alert>
       </div>
-      <div v-else>
+      <div>
         <b-card>
           <p><b>Nombre y Apellido:</b> {{ medico.nombre }} {{ medico.apellido }}</p>
           <p><b>Legajo:</b> {{ medico.legajo }}</p>

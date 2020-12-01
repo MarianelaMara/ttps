@@ -23,6 +23,10 @@
                         <b-dropdown-item href="#" v-on:click="sistema(4)">Domicilio</b-dropdown-item>
                         <b-dropdown-item href="#" v-on:click="sistema(5)">Hotel</b-dropdown-item>
                     </b-nav-item-dropdown>
+                    <b-nav-item-dropdown text="Alertas" right>
+                        <b-dropdown-item href="/alertas">Alertas Pendientes</b-dropdown-item>
+                        <b-dropdown-item href="/historialalertas">Historial de alertas</b-dropdown-item>
+                    </b-nav-item-dropdown>
                     <b-nav-item href="#" v-on:click="configguardia()">Configuración guardia</b-nav-item>
                     <b-nav-item href="#" v-on:click="cerrarsesion()">Cerrar sesión</b-nav-item>
                 </b-navbar-nav>

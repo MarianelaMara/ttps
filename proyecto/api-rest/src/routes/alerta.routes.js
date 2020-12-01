@@ -7,7 +7,8 @@ router.get("/alertas/:id", [middleware.checkToken], alerta.getAlertas);
 //devuelve las alerta pendientes de un medico o jefe
 router.get("/alertaspendientes/:id", [middleware.checkToken], alerta.getAlertasPendientes);
 //marca alerta como vista
-router.post("/marcaralerta", alerta.marcarAlerta);
+router.post("/marcaralerta", [middleware.checkToken], alerta.marcarAlerta);
+
 
 
 module.exports = router;

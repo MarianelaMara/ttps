@@ -14,6 +14,8 @@ import AgregarEvolucion from '@/views/AgregarEvolucion'
 import AgregarInternacion from '@/views/AgregarInternacion'
 import AgregarPaciente from '@/views/AgregarPaciente'
 import AsignarMedico from '@/views/AsignarMedico'
+import Alertas from '@/views/Alertas'
+import HistorialAlertas from '@/views/HistorialAlertas'
 
 Vue.use(Router)
 
@@ -105,6 +107,18 @@ export default new Router({
       path: '/asignarMedico/:id',
       name: 'AsignarMedico',
       component: AsignarMedico
+    },
+    {
+      path: '/alertas',
+      name: 'Alertas',
+      component: Alertas,
+      beforeEnter: authorization
+    },
+    {
+      path: '/historialalertas',
+      name: 'HistorialAlertas',
+      component: HistorialAlertas,
+      beforeEnter: authorization
     }
   ]
 })
