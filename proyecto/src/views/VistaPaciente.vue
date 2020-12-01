@@ -25,9 +25,10 @@
                   <b-modal id="modal-sm" size="sm" title="Alta por obito" @ok="altaobito()">Confirma alta por obito</b-modal>
                 <b-nav-item href="#" v-b-modal.modal-sm>Alta médico</b-nav-item>
                   <b-modal id="modal-sm" size="sm" title="Alta médica" @ok="altamedica()">Confirma alta médica</b-modal>
-                <b-nav-item-dropdown text="Evoluciones" right>
-                  <b-dropdown-item href="" v-on:click="verevoluciones()">Ver evoluciones</b-dropdown-item>
-                  <b-dropdown-item href="">Ver evoluciones y sistemas</b-dropdown-item>
+                <b-nav-item-dropdown text="Ver" right>
+                  <b-dropdown-item href="" v-on:click="verevoluciones()">Evoluciones</b-dropdown-item>
+                  <b-dropdown-item href="">Evoluciones y sistemas</b-dropdown-item>
+                  <b-dropdown-item href="" v-on:click="verinternaciones()">Internaciones</b-dropdown-item>
                 </b-nav-item-dropdown> 
                 <b-nav-item-dropdown text="Cambiar de sistema" right>
                   <b-dropdown-item href="">Guardia</b-dropdown-item>
@@ -48,7 +49,7 @@
           <b-list-group-item><b>Sistema actual:</b> {{ sistema }}</b-list-group-item>
           <b-list-group-item><b>DNI:</b> {{ dni }}</b-list-group-item>
           <b-list-group-item><b>Domicilio:</b> {{ domicilio }}</b-list-group-item>
-          <b-list-group-item><b>Fecha de nacimiento:</b> {{ fechanac }}</b-list-group-item>
+          <b-list-group-item><b>Fecha de nacimiento:</b> {{ fechanac.slice(0, -14) }}</b-list-group-item>
           <b-list-group-item v-bind:key="antecedentes" v-if="antecedentes !=''"><b>antecedentes personales:</b> {{ antecedentes }}</b-list-group-item>
           <b-list-group-item v-bind:key="obrasocial" v-if="obrasocial !=''"><b>Obra social:</b> {{ obrasocial }}</b-list-group-item>
         </b-list-group>
@@ -145,6 +146,9 @@ export default {
     });
   },
   methods: {
+      verinternaciones() {
+          this.$router.push('/internaciones/'+this.idpaciente);
+      },
       verevoluciones() {
           this.$router.push('/evoluciones/'+this.idpaciente);
       },

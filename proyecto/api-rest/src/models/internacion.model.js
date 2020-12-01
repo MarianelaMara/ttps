@@ -27,6 +27,21 @@ Internacion.getInternacion = (id, result) => {
       result({ kind: "not_found" }, null);
     });
 };
+Internacion.getInternaciones = (id, result) => {
+  sql.query('SELECT * FROM internacion WHERE idpaciente='+ [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+    // not found Internaciones with the idppaciente
+    result({ kind: "not_found" }, null);
+  });
+};
 Internacion.obito = (id, result) => {
   sql.query('UPDATE `internacion` SET `fechaobito`= CURDATE(), `estado`= "inactivo" WHERE `idinternacion`='+ [id], (err, res) => {
     if (err) {
@@ -60,7 +75,7 @@ Internacion.altamedica = (id, result) => {
   
 Internacion.addInternacion = (idpaciente, fechasintomas, fechadiagnostico, enfermedadactual,  result) => {
   if(fechadiagnostico === ''){ fechadiagnostico = 'NULL'}
-  sql.query('INSERT INTO internacion (`idpaciente`, `fecha`, `fechasintomas`, `fechadiagnostico`, `enfermedadactual`,  `estado`) VALUES ("' + [idpaciente] + '", CURDATE(), "' + [fechasintomas] + '", ' + [fechadiagnostico] + ', "' + [enfermedadactual] +'", "activo")' , (err, res) => {
+  sql.query('INSERT INTO internacion (`idpaciente`, `fecha`, `fechasintomas`, `fechadiagnostico`, `enfermedadactual`,  `estado`) VALUES ("' + [idpaciente] + '", CURDATE(), "' + [fechasintomas] + '", "' + [fechadiagnostico] + '", "' + [enfermedadactual] +'", "activo")' , (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

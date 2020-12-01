@@ -5,7 +5,7 @@
     <div>    
       <b-card>
         <template #header>
-         <h4 class="mb-0">Evoluciones</h4>
+         <h4 class="mb-0">Evoluciones de la última internación</h4>
         </template>
         <div v-for="evolucion in evoluciones"  v-bind:my="evolucion" v-bind:key="evolucion.idevolucion">
             <Evolucion :evolucion="evolucion"></Evolucion>
@@ -58,11 +58,4 @@ export default {
 </script>
 
 <style>
-
-.search {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 </style>

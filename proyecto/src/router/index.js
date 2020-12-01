@@ -16,6 +16,7 @@ import AgregarPaciente from '@/views/AgregarPaciente'
 import AsignarMedico from '@/views/AsignarMedico'
 import Alertas from '@/views/Alertas'
 import HistorialAlertas from '@/views/HistorialAlertas'
+import Internaciones from '@/views/Internaciones'
 
 Vue.use(Router)
 
@@ -87,6 +88,11 @@ export default new Router({
       path: '/evoluciones/:id',
       name: 'Evoluciones',
       component: Evoluciones
+    },
+    {
+      path: '/internaciones/:id',
+      name: 'Internaciones',
+      component: Internaciones
     },
     {
       path: '/agregarevolucion/:id',

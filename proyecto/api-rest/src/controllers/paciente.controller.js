@@ -16,7 +16,22 @@ exports.getAllPacientes = (req, res) => {
         } else res.json(data);
       });
   };
-  
+  exports.getPacientesSistema = (req, res) => {
+    const id = req.params.id;
+    Paciente.getPacientesSistema(id, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error retrieving  "
+            });
+          }
+        } else res.json(data);
+      });
+  };
 exports.getPaciente = (req, res) => {
     const  id = req.params.id;
     Paciente.getPaciente(id, (err, data) => {

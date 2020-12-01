@@ -47,6 +47,22 @@ Paciente.getPaciente = (id, result) => {
       result({ kind: "not_found" }, null);
     });
 };
+//devuelve los pacientes de un sistema en particular
+Paciente.getPacientesSistema = (id, result) => {
+  sql.query('SELECT * FROM paciente WHERE idsistema = ' + [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+    // not found Pacientes
+    result({ kind: "not_found" }, null);
+  });
+};
 //devuelve un paciente con dni
 Paciente.getPacienteDni = (dni, result) => {
   sql.query('SELECT * FROM paciente WHERE dni = ' + [dni], (err, res) => {
