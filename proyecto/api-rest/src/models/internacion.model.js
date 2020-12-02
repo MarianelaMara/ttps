@@ -1,4 +1,5 @@
 const sql = require("../database.js");
+const Sistema = require("./sistema.model.js");
 
 
 const Internacion = function(p) {
@@ -42,7 +43,7 @@ Internacion.getInternaciones = (id, result) => {
     result({ kind: "not_found" }, null);
   });
 };
-Internacion.obito = (id, result) => {
+Internacion.obito = (id, idpaciente, result) => {
   sql.query('UPDATE `internacion` SET `fechaobito`= CURDATE(), `estado`= "inactivo" WHERE `idinternacion`='+ [id], (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -50,6 +51,32 @@ Internacion.obito = (id, result) => {
       return;
     } 
     if (res) {
+      Sistema.desocuparCama(idpaciente, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `No hay camas ocupadas`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error servidor  "
+            });
+          }
+        }
+      });
+      Sistema.borrarMedicosAsignados(idpaciente, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `No hay camas ocupadas`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error servidor  "
+            });
+          }
+        }
+      });
       result(null, res);
       return;
     }
@@ -57,7 +84,7 @@ Internacion.obito = (id, result) => {
     result({ kind: "not_found" }, null);
   });
 };
-Internacion.altamedica = (id, result) => {
+Internacion.altamedica = (id, idpaciente, result) => {
   sql.query('UPDATE `internacion` SET `fechaegreso`= CURDATE(), `estado`= "inactivo" WHERE `idinternacion`='+ [id], (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -65,6 +92,32 @@ Internacion.altamedica = (id, result) => {
       return;
     } 
     if (res) {
+      Sistema.desocuparCama(idpaciente, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `No hay camas ocupadas`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error servidor  "
+            });
+          }
+        }
+      });
+      Sistema.borrarMedicosAsignados(idpaciente, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `No hay camas ocupadas`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error servidor  "
+            });
+          }
+        }
+      });
       result(null, res);
       return;
     }

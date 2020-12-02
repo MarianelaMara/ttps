@@ -44,8 +44,8 @@ exports.getInternaciones = (req, res) => {
     });
 };
 exports.obito = (req, res) => {
-  const  id = req.body.id;
-  Internacion.obito(id, (err, data) => {
+  const  {id, idpaciente} = req.body;
+  Internacion.obito(id, idpaciente, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
@@ -60,8 +60,8 @@ exports.obito = (req, res) => {
     });
 };
 exports.altamedica = (req, res) => {
-  const  id = req.body.id;
-  Internacion.altamedica(id, (err, data) => {
+  const  {id, idpaciente} = req.body;
+  Internacion.altamedica(id, idpaciente, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({

@@ -163,7 +163,7 @@ export default {
       },
       altaobito() {
         axios
-        .put('http://localhost:3000/obito', {id: this.idinternacion},{headers: { "user_token": sessionStorage.token }})
+        .put('http://localhost:3000/obito', {id: this.idinternacion, idpaciente: this.idpaciente},{headers: { "user_token": sessionStorage.token }})
         .then(response => {
           this.exitoobito = true;
         })
@@ -172,7 +172,7 @@ export default {
       },
        altamedica() {
         axios
-        .put('http://localhost:3000/altamedica', {id: this.idinternacion},{headers: { "user_token": sessionStorage.token }})
+        .put('http://localhost:3000/altamedica', {id: this.idinternacion, idpaciente: this.idpaciente},{headers: { "user_token": sessionStorage.token }})
         .then(response => {
           this.exitomedica = true;
         })

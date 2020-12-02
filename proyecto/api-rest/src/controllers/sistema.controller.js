@@ -144,7 +144,7 @@ exports.getCantidadCamasOcupadas = (req, res) => {
 //Borra los medicos que tenía asignados y asigna como medico al jefe del sistema nuevo
 exports.getCambioSistema = (req, res) => {
   const  {idsistema, idpaciente, idcama} = req.body;
-  Sistema.getCamaLibre(idsistema, (err, data) => {
+  /*Sistema.getCamaLibre(idsistema, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
@@ -197,5 +197,5 @@ exports.getCambioSistema = (req, res) => {
         }
         res.send(datos);
       }
-    });
+    });*/
 };

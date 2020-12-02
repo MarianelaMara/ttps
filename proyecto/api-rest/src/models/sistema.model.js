@@ -237,8 +237,8 @@ Sistema.ocuparCamaIlimitada = (idpaciente,result) => {
   });
   
 };
-Sistema.desocuparCama = (idcama, result) => {
-  sql.query('UPDATE cama SET idpaciente ="0", libre= "1" WHERE (idcama=" '+[idcama]+'")', (err) => {
+Sistema.desocuparCama = (idpaciente, result) => {
+  sql.query('UPDATE cama SET idpaciente ="0", libre= "1" WHERE (idpaciente=" '+[idpaciente]+'")', (err) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
