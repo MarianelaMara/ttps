@@ -79,6 +79,248 @@ exports.addPaciente = (req, res) => {
   Sistema.getCamaLibre(1, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
+        Sistema.config((error, data) => {
+          if (error) {
+            res.status(500).send({
+              message: "Error servidor  "
+            });
+            }else{
+              if(data.camasinfinitas=== "0"){ 
+                res.status(404).send({
+                  message: `No hay lugar en guardia para ingresar al paciente`
+                });
+               }
+              else{
+                Paciente.addPaciente(dni, nombre, apellido, domicilio, fechanac, telefono,antecedentes, obrasocial, nombrecontacto, parentesco, telefonocontacto, (err, dataDos) => {
+                  if (err) {
+                    res.status(404).send({
+                    message: `No se pudo agregar el paciente`
+                    });
+                  } else {
+                    Sistema.asignarJefeaPaciente(dataDos.idpaciente, 1, (errJ) => {
+                      if (errJ) {
+                        if (errJ.kind === "not_found") {
+                          res.status(404).send({
+                            message: `No se puede asignar jefe al paciente`
+                          });
+                        } else {
+                          res.status(500).send({
+                            message: "Error servidor  "
+                          });
+                        }
+                      } 
+                    });
+                    Sistema.ocuparCamaIlimitada(dataDos.idpaciente, (errC, dataCama) => {
+                      if (errC) {
+                          res.status(404).send({
+                            message: `No se puede ocupar la cama`
+                          });
+                      }else {
+                        var datos = {
+                          idpaciente: dataDos.idpaciente,
+                          nombre: dataDos.nombre,
+                          apellido: dataDos.apellido,
+                          dni: dataDos.dni,
+                          domicilio: dataDos.domicilio,
+                          fechanac: dataDos.fechanac,
+                          telefono: dataDos.telefono,
+                          idsistema: dataDos.idsistema,
+                          antecedentes: dataDos.antecedentes,
+                          obrasocial: dataDos.obrasocial,
+                          nombrecontacto: dataDos.nombrecontacto,
+                          telefonocontacto: dataDos.telefonocontacto,
+                          parentesco: dataDos.parentesco,
+                          nombresala: 11,
+                          numerodecama:dataCama
+                        }
+                        res.send(datos);
+                      }
+                    });
+                    
+                  }
+                });
+              }
+            }
+        }); 
+      } else {
+        res.status(500).send({
+          message: "Error servidor  "
+        });
+      }
+    }else {
+      Paciente.addPaciente(dni, nombre, apellido, domicilio, fechanac, telefono,antecedentes, obrasocial, nombrecontacto, parentesco, telefonocontacto, (err, dataDos) => {
+        if (err) {
+          res.status(404).send({
+          message: `No se pudo agregar el paciente`
+          });
+        } else {
+            Sistema.ocuparCama(data.idcama, dataDos.idpaciente, (errC) => {
+              if (errC) {
+                  res.status(404).send({
+                    message: `No se puede ocupar la cama`
+                  });
+              }
+            });
+            Sistema.asignarJefeaPaciente(dataDos.idpaciente, 1, (errJ) => {
+              if (errJ) {
+                if (errJ.kind === "not_found") {
+                  res.status(404).send({
+                    message: `No se puede asignar jefe al paciente`
+                  });
+                } else {
+                  res.status(500).send({
+                    message: "Error servidor  "
+                  });
+                }
+              } 
+            });
+            var datos = {
+              idpaciente: dataDos.idpaciente,
+              nombre: dataDos.nombre,
+              apellido: dataDos.apellido,
+              dni: dataDos.dni,
+              domicilio: dataDos.domicilio,
+              fechanac: dataDos.fechanac,
+              telefono: dataDos.telefono,
+              idsistema: dataDos.idsistema,
+              antecedentes: dataDos.antecedentes,
+              obrasocial: dataDos.obrasocial,
+              nombrecontacto: dataDos.nombrecontacto,
+              telefonocontacto: dataDos.telefonocontacto,
+              parentesco: dataDos.parentesco,
+              nombresala: data.nombresala,
+              numerodecama:data.numero
+            }
+            res.send(datos);
+        }
+      });
+    }
+  });
+  
+  /*Sistema.config((error, data) => {
+    if (error) {
+      res.status(500).send({
+        message: "Error servidor  "
+      });
+      }else{
+        if(data.camasinfinitas=== "0"){
+          Sistema.getCamaLibre(1, (err, data) => {
+            if (err) {
+              if (err.kind === "not_found") {
+                res.status(404).send({
+                  message: `No hay lugar en guardia para ingresar al paciente`
+                });
+              } else {
+                res.status(500).send({
+                  message: "Error servidor  "
+                });
+              }
+            }else {
+              Paciente.addPaciente(dni, nombre, apellido, domicilio, fechanac, telefono,antecedentes, obrasocial, nombrecontacto, parentesco, telefonocontacto, (err, dataDos) => {
+                if (err) {
+                  res.status(404).send({
+                  message: `No se pudo agregar el paciente`
+                  });
+                } else {
+                    Sistema.ocuparCama(data.idcama, dataDos.idpaciente, (errC) => {
+                      if (errC) {
+                          res.status(404).send({
+                            message: `No se puede ocupar la cama`
+                          });
+                      }
+                    });
+                    Sistema.asignarJefeaPaciente(dataDos.idpaciente, 1, (errJ) => {
+                      if (errJ) {
+                        if (errJ.kind === "not_found") {
+                          res.status(404).send({
+                            message: `No se puede asignar jefe al paciente`
+                          });
+                        } else {
+                          res.status(500).send({
+                            message: "Error servidor  "
+                          });
+                        }
+                      } 
+                    });
+                    var datos = {
+                      idpaciente: dataDos.idpaciente,
+                      nombre: dataDos.nombre,
+                      apellido: dataDos.apellido,
+                      dni: dataDos.dni,
+                      domicilio: dataDos.domicilio,
+                      fechanac: dataDos.fechanac,
+                      telefono: dataDos.telefono,
+                      idsistema: dataDos.idsistema,
+                      antecedentes: dataDos.antecedentes,
+                      obrasocial: dataDos.obrasocial,
+                      nombrecontacto: dataDos.nombrecontacto,
+                      telefonocontacto: dataDos.telefonocontacto,
+                      parentesco: dataDos.parentesco,
+                      nombresala: data.nombresala,
+                      numerodecama:data.numero
+                    }
+                    res.send(datos);
+                }
+              });
+            }
+          });               
+        }
+        else {
+          Paciente.addPaciente(dni, nombre, apellido, domicilio, fechanac, telefono,antecedentes, obrasocial, nombrecontacto, parentesco, telefonocontacto, (err, dataDos) => {
+            if (err) {
+              res.status(404).send({
+              message: `No se pudo agregar el paciente`
+              });
+            } else {
+              Sistema.asignarJefeaPaciente(dataDos.idpaciente, 1, (errJ) => {
+                if (errJ) {
+                  if (errJ.kind === "not_found") {
+                    res.status(404).send({
+                      message: `No se puede asignar jefe al paciente`
+                    });
+                  } else {
+                    res.status(500).send({
+                      message: "Error servidor  "
+                    });
+                  }
+                } 
+              });
+              Sistema.ocuparCamaIlimitada(dataDos.idpaciente, (errC, dataCama) => {
+                if (errC) {
+                    res.status(404).send({
+                      message: `No se puede ocupar la cama`
+                    });
+                }else {
+                  var datos = {
+                    idpaciente: dataDos.idpaciente,
+                    nombre: dataDos.nombre,
+                    apellido: dataDos.apellido,
+                    dni: dataDos.dni,
+                    domicilio: dataDos.domicilio,
+                    fechanac: dataDos.fechanac,
+                    telefono: dataDos.telefono,
+                    idsistema: dataDos.idsistema,
+                    antecedentes: dataDos.antecedentes,
+                    obrasocial: dataDos.obrasocial,
+                    nombrecontacto: dataDos.nombrecontacto,
+                    telefonocontacto: dataDos.telefonocontacto,
+                    parentesco: dataDos.parentesco,
+                    nombresala: 11,
+                    numerodecama:dataCama
+                  }
+                  res.send(datos);
+                }
+              });
+              
+            }
+          });
+        }
+      } 
+  });
+  
+  Sistema.getCamaLibre(1, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
         res.status(404).send({
           message: `No hay lugar en guardia para ingresar al paciente`
         });
@@ -135,5 +377,5 @@ exports.addPaciente = (req, res) => {
         }
       });
     }
-  });
+  });*/
 };

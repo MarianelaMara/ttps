@@ -2,7 +2,20 @@
     <div>
         <Header></Header>
         <NavbarPerfil></NavbarPerfil>
-        <div v-if="err">
+        <div v-if="ev">
+          <b-card>
+            <template #header>
+              <b-navbar class="ml-auto">
+                <b-navbar-nav class="ml-auto">
+                  <b-nav-item href="#" v-on:click="verpaciente()">Ver Paciente</b-nav-item>
+                </b-navbar-nav>
+              </b-navbar>
+            </template>
+          </b-card>
+          <b-alert show dismissible variant="success"> Se agregó con éxito la evolución
+          </b-alert>
+        </div>
+        <div v-else-if="err">
           <b-alert show dismissible variant="danger">Debe agregar una internación al paciente
           </b-alert>
         </div>
@@ -143,7 +156,8 @@ export default {
     traqueotomia: false,
     vasopresores: false,
     vasopresoresdescripcion: '',
-    err: false
+    err: false,
+    ev:false
   }),
    mounted () {
     axios
@@ -152,15 +166,14 @@ export default {
         this.idsistema= response.data.idsistema
       })
       .catch(error => {
-        console.log(error)
+        
     });
     axios
       .get('http://localhost:3000/internacion/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
       .then(response => {
         this.idinternacion= response.data.idinternacion
         axios .get('http://localhost:3000/ultimaevolucion/'+ this.idinternacion, {headers: { "user_token": sessionStorage.token }})
-      .then(response => {
-        console.log(response.data);
+        .then(response => {
         this.temperatura= response.data.temperatura,
         this.tasistolica= response.data.tasistolica,
         this.tadiastolica= response.data.tadiastolica,
@@ -198,11 +211,14 @@ export default {
         axios.post('http://localhost:3000/evolucion', {idsistema: this.idsistema, idinternacion: this.idinternacion, idpersonal: sessionStorage.idempleado, temperatura: this.temperatura, tasistolica: this.tasistolica, tadiastolica: this.tadiastolica, fc: this.fc, fr: this.fr , mecanicaventilatoria: this.mecanicaventilatoria , oxigeno: this.oxigeno, tipo: this.tipo, litros: this.litros, porcentaje: this.porcentaje, saturacion: this.saturacion, pafi: this.pafi, valorpafi: this.valorpafi, pronovigil: this.pronovigil, tos: this.tos, disnea: this.disnea, estabilidad: this.estabilidad, somnolencia: this.somnolencia, anosmia: this.anosmia, disgeusia: this.disgeusia, observacion: this.observacion, arm: this.arm, armdescripcion: this.armdescripcion, traqueotomia: this.traqueotomia, vasopresores: this.vasopresores, vasopresoresdescripcion: this.vasopresoresdescripcion}, {headers: { "user_token": sessionStorage.token }})
         
         .then(response => {
-          console.log(response.data);
+          this.ev= true;
         })
         .catch(error => {
           this.err = true;
         });
+    },  
+    verpaciente() {
+      this.$router.push('/vistaPaciente/'+this.$route.params.id);
     }
   }
 }

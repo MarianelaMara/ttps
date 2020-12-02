@@ -200,7 +200,43 @@ Sistema.ocuparCama = (idcama, idpaciente,result) => {
       }
     });
 };
+Sistema.ocuparCamaIlimitada = (idpaciente,result) => {
+  sql.query('SELECT * FROM cama WHERE cama.idsala= 11 ORDER BY cama.numero DESC LIMIT 1', (errDos, res) => {
+    if (errDos) {
+      console.log("error: ", errDos);
+      result(errDos, null);
+      return;
+    } 
+    if (res.length) {
+      var num= res[0].numero+1;
+      console.log("la cama es "+num +res.data);
+      sql.query('INSERT INTO cama (idsala, numero, idpaciente, libre )  VALUES ("11", "' +[num]+'", "'+[idpaciente]+'", "0")', (errO, resO) => {
+        if (errO) {
+          console.log("error: ", errO);
+          result(err, null);
+          return;
+        }else{
+          result(null, num);
+          return;
+        }
+      });
+    }else {
+      sql.query('INSERT INTO cama (idsala, numero, idpaciente, libre )  VALUES ("11", "1", "'+[idpaciente]+'", "0")', (errO, resO) => {
+        if (errO) {
+          console.log("error: ", errO);
+          result(err, null);
+          return;
+        }else{
+          result(null, 1);
+      return;
+        }
+      });
+    }
+    
 
+  });
+  
+};
 Sistema.desocuparCama = (idcama, result) => {
   sql.query('UPDATE cama SET idpaciente ="0", libre= "1" WHERE (idcama=" '+[idcama]+'")', (err) => {
     if (err) {

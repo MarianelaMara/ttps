@@ -3,6 +3,15 @@
         <Header></Header>
         <NavbarPerfil></NavbarPerfil>
         <div v-if="ok">
+          <b-card>
+            <template #header>
+              <b-navbar class="ml-auto">
+                <b-navbar-nav class="ml-auto">
+                  <b-nav-item href="#" v-on:click="verpaciente()">Ver Paciente</b-nav-item>
+                </b-navbar-nav>
+              </b-navbar>
+            </template>
+          </b-card>
           <b-alert show dismissible variant="success">Se agrego la internación con éxito.
           </b-alert>
         </div>
@@ -71,6 +80,9 @@ export default {
         .catch(error => {
     
         });
+    },
+     verpaciente() {
+      this.$router.push('/vistaPaciente/'+this.$route.params.id);
     }
   }
 }

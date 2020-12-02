@@ -3,7 +3,18 @@
         <Header></Header>
         <NavbarPerfil></NavbarPerfil>
         <div v-if="ok">
-          <b-alert show dismissible variant="success"> El paciente fue asignado a la cama {{ cama }} en la sala {{ sala }} 
+          <b-card>
+            <template #header>
+              <b-navbar class="ml-auto">
+                <b-navbar-nav class="ml-auto">
+                  <b-nav-item href="#" v-on:click="verpaciente()">Ver Paciente</b-nav-item>
+                </b-navbar-nav>
+              </b-navbar>
+            </template>
+          </b-card>
+          <b-alert show dismissible variant="success"> El paciente fue asignado a la cama {{ cama }} en la sala {{ sala }}.
+          </b-alert>
+                   <b-alert show dismissible variant="warning">Debes agregarle una internación desde la vista del paciente.
           </b-alert>
         </div>
         <div v-else-if="err">
@@ -58,32 +69,7 @@
                     </b-form-group>
                      <b-form-group label-cols="3" label-cols-lg="3" label="Parentesco:">
                       <b-form-input type="text" v-model="parentesco"></b-form-input>                    
-                    </b-form-group>
-                     <h6><b>Datos de la Internación</b></h6>
-                    <b-form-group label-cols="3" label-cols-lg="3" label="Fecha inicio de síntomas:">
-                      <b-input-group class= "mb-3">
-                          <b-form-input  v-model="fechasintomas" type= "text" placeholder= "AAAA-MM-DD" autocomplete= "off" required>
-                          </b-form-input> 
-                          <b-input-group-append> 
-                            <b-form-datepicker v-model="fechasintomas" button-only right locale="sp-ES">
-                            </b-form-datepicker> 
-                          </b-input-group-append> 
-                      </b-input-group>                     
-                    </b-form-group>
-                    <b-form-group  label-cols="3" label-cols-lg="3" label="Fecha diagnostico:">
-                      <b-input-group class= "mb-3">
-                          <b-form-input v-model="fechadiagnostico" type= "text" placeholder= "AAAA-MM-DD" autocomplete= "off">
-                          </b-form-input> 
-                          <b-input-group-append> 
-                            <b-form-datepicker v-model="fechadiagnostico" button-only right locale="sp-ES">
-                            </b-form-datepicker> 
-                          </b-input-group-append> 
-                      </b-input-group>                 
-                    </b-form-group>
-                    <b-form-group label-cols="3" label-cols-lg="3" label="Enfermedad actual">
-                      <b-form-textarea v-model="enfermedadactual" rows = "2" max-rows = "6"></b-form-textarea>
-                    </b-form-group>
-                    
+                    </b-form-group>                  
                     <div class="text-center">
                       <b-button type="submit" variant="secondary">Guardar</b-button>
                     </div>
@@ -116,30 +102,32 @@ export default {
     nombrecontacto: '',
     parentesco: '',
     telefonocontacto: '',
-    fechasintomas: '',
-    fechadiagnostico: '',
-    enfermedadactual: '',
     sala: '',
     cama: '',
     err: false,
-    ok: false
+    ok: false,
+    idpaciente: ''
   }),
   methods: {
     agregar(){ 
-        axios.post('http://localhost:3000/paciente', {dni: this.dni, nombre: this.nombre, apellido: this.apellido, domicilio: this.domicilio, fechanac: this.fechanac, telefono: this.telefono, antecedentes: this.antecedentes, obrasocial: this.obrasocial, nombrecontacto: this.nombrecontacto, parentesco: this.parentesco, telefonocontacto: this.telefonocontacto}, {headers: { "user_token": sessionStorage.token }})
+        axios.post('http://localhost:3000/paciente', {dni: this.dni, nombre: this.nombre, apellido: this.apellido, domicilio: this.domicilio, fechanac: this.fechanac, telefono: this.telefono, antecedentes: this.antecedentes, obrasocial: this.obrasocial, nombrecontacto: this.nombrecontacto, parentesco: this.parentesco, telefonocontacto: this.telefonocontacto, fechasintomas: this.fechasintomas, fechadiagnostico: this.fechadiagnostico, enfermedadactual: this.enfermedadactual}, {headers: { "user_token": sessionStorage.token }})
         .then(response => {
-            axios.post('http://localhost:3000/internacion', {idpaciente: response.data.idpaciente, fechasintomas: this.fechasintomas, fechadiagnostico: this.fechadiagnostico, enfermedadactual: this.enfermedadactual}, {headers: { "user_token": sessionStorage.token }})
+            /*axios.post('http://localhost:3000/internacion', {idpaciente: response.data.idpaciente, fechasintomas: this.fechasintomas, fechadiagnostico: this.fechadiagnostico, enfermedadactual: this.enfermedadactual}, {headers: { "user_token": sessionStorage.token }})
             .then(response => {})
-            .catch(error => { console.log('error de internacion')});
+            .catch(error => { console.log('error de internacion')});*/
             this.ok = true;
             this.cama = response.data.numerodecama;
-            this.sala = response.data.nombresala
+            this.sala = response.data.nombresala;
+            this.idpaciente= response.data.idpaciente
         })
         .catch(error => {
             if(error.response.status === 404) {
                 this.err = true;
             }
         });
+    },
+    verpaciente() {
+      this.$router.push('/vistaPaciente/'+this.idpaciente);
     }
   }
 }

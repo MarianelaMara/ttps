@@ -9,5 +9,5 @@ router.get("/pacientessistema/:id", [middleware.checkToken],  paciente.getPacien
 router.get("/paciente/:id", [middleware.checkToken], paciente.getPaciente);
 router.post("/buscarpaciente", [middleware.checkToken], paciente.getPacienteDni);
 router.post("/asignarmedico", paciente.asignarMedico);
-router.post("/paciente", [middleware.checkToken], validations.validate(validations.createPaciente),paciente.addPaciente);
+router.post("/paciente", [middleware.checkToken],paciente.addPaciente);
 module.exports = router;
