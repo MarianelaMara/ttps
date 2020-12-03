@@ -10,7 +10,15 @@
           <b-alert show dismissible variant="success">Se realizó el alta médica.
           </b-alert>
     </div>
-    <div v-else>         
+    <div v-else>
+       <div v-if="errorcambio">
+          <b-alert show dismissible variant="danger">No se puede realizar el cambio de sistema porque no hay camas disponibles
+          </b-alert>
+    </div> 
+    <div v-if="cambio">
+          <b-alert show dismissible variant="success"> El paciente fue asignado a la cama {{ cama }} en la sala {{ sala }}.</b-alert>
+    </div>  
+    <div v-else>
       <b-card>
         <template #header>
           <b-navbar toggleable="md">
@@ -30,12 +38,12 @@
                   <b-dropdown-item href="">Evoluciones y sistemas</b-dropdown-item>
                   <b-dropdown-item href="" v-on:click="verinternaciones()">Internaciones</b-dropdown-item>
                 </b-nav-item-dropdown> 
-                <b-nav-item-dropdown text="Cambiar de sistema" right>
-                  <b-dropdown-item href="">Guardia</b-dropdown-item>
-                  <b-dropdown-item href="">Piso Covid</b-dropdown-item>
-                  <b-dropdown-item href="">UTI</b-dropdown-item>
-                  <b-dropdown-item href="">Domicilio</b-dropdown-item>
-                  <b-dropdown-item href="">Hotel</b-dropdown-item>
+                <b-nav-item-dropdown  v-bind:key="idsistema" text="Cambiar de sistema" right>
+                   <b-dropdown-item v-on:click="cambiarsistema(1)" v-if="idsistema===4 || idsistema===5">Guardia</b-dropdown-item>
+                  <b-dropdown-item v-on:click="cambiarsistema(2)" v-if="idsistema===1 || idsistema===3  || idsistema===5">Piso Covid</b-dropdown-item>
+                  <b-dropdown-item v-on:click="cambiarsistema(3)" v-if="idsistema===1 || idsistema===2">UTI</b-dropdown-item>
+                  <b-dropdown-item v-on:click="cambiarsistema(4)" v-if="idsistema===2">Domicilio</b-dropdown-item>
+                  <b-dropdown-item v-on:click="cambiarsistema(5)" v-if="idsistema===2">Hotel</b-dropdown-item>
                 </b-nav-item-dropdown>
               </b-navbar-nav>
               <b-navbar-nav class="ml-auto" v-else>
@@ -54,6 +62,7 @@
           <b-list-group-item v-bind:key="obrasocial" v-if="obrasocial !=''"><b>Obra social:</b> {{ obrasocial }}</b-list-group-item>
         </b-list-group>
     </b-card>
+
     <b-card v-bind:key="nombrecontacto" v-if="nombrecontacto !=''">
       <template #header>
          <h6 class="mb-0">Datos de Contacto</h6>
@@ -64,6 +73,7 @@
           <b-list-group-item><b>Parentesco:</b> {{ parentesco }}</b-list-group-item>
         </b-list-group>
     </b-card>
+    </div>  
     </div>
   </div>
 </template>
@@ -99,7 +109,11 @@ export default {
       modalObito: false,
       idinternacion: '',
       exitoobito: false,
-      exitomedica: false
+      exitomedica: false,
+      cambio: false,
+      errorcambio: false,
+      cama: '',
+      sala: ''
     }
   },
   mounted () {
@@ -146,6 +160,9 @@ export default {
     });
   },
   methods: {
+      verpaciente() {
+        this.$router.push('/vistaPaciente/'+this.idpaciente);
+      },
       verinternaciones() {
           this.$router.push('/internaciones/'+this.idpaciente);
       },
@@ -177,6 +194,18 @@ export default {
           this.exitomedica = true;
         })
         .catch(error => {
+        });
+      },
+      cambiarsistema(id) {
+        axios
+        .post('http://localhost:3000/cambiarsistema', {idsistema: id, idpaciente: this.idpaciente},{headers: { "user_token": sessionStorage.token }})
+        .then(response => {
+          this.cambio = true;
+          this.cama= response.data.numerocama;
+          this.sala= response.data.nombresala
+        })
+        .catch(error => {
+          this.errorcambio= true;
         });
       }
   }

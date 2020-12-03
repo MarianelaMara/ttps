@@ -120,7 +120,7 @@ Sistema.getCamas = (id, result) => {
   });
 };
 Sistema.getCantidadCamasOcupadas = (id, result) => {
-  sql.query('SELECT COUNT(*) AS ocupadas FROM cama WHERE idsala= ' + [id] +' AND libre="0"', (err, res) => {
+  sql.query('SELECT COUNT(*) AS ocupadas FROM cama WHERE idsala= ' + [id] +' AND libre=0', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -163,7 +163,7 @@ Sistema.getCantidadCamasSistema = (id, result) => {
   });
 };
 Sistema.getCantidadCamasOcupadasSistema = (id, result) => {
-  sql.query('SELECT COUNT(*) AS camasocupadas FROM sistema INNER JOIN sala ON sistema.idsistema=sala.idsistema INNER JOIN cama ON sala.idsala= cama.idsala WHERE sistema.idsistema= ' + [id]+ ' AND cama.libre = "1"', (err, res) => {
+  sql.query('SELECT COUNT(*) AS camasocupadas FROM sistema INNER JOIN sala ON sistema.idsistema=sala.idsistema INNER JOIN cama ON sala.idsala= cama.idsala WHERE sistema.idsistema= ' + [id]+ ' AND cama.libre = "0"', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

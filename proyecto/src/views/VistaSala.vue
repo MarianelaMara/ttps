@@ -19,14 +19,8 @@
          </b-card>
     </div>
         <div>
-            <div v-for="cama in camas"  v-bind:my="cama" v-bind:key="cama.estado">
-                <b-card>
-                  <b>Número de cama: </b>{{ cama.numero}}
-                  <b>Estado: </b>{{ cama.estado}}
-                  <div v-if="(cama.estado == 'ocupada')">
-                    <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit" v-on:click="select()" >Ver más </b-button>
-                  </div>
-                </b-card>
+            <div v-for="cama in camas"  v-bind:my="cama" v-bind:key="cama.idcama">
+                <CardCama :cama="cama"></CardCama>
             </div>
         </div>
   </b-card>
@@ -37,12 +31,14 @@
 <script>
 import NavbarPerfil from '../components/NavbarPerfil'
 import Header from '../components/Header'
+import CardCama from '../components/CardCama'
 import axios from 'axios';
 export default {
   name: 'Sala',
   components: {
     NavbarPerfil,
-    Header
+    Header,
+    CardCama
   },
   data () {
     return {

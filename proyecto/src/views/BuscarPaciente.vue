@@ -17,6 +17,9 @@
           <b-alert show dismissible variant="danger">No se encuentra registrado ese DNI.
           </b-alert>
     </div>
+    <div v-else-if="errpacientes">
+       <p>No hay pacientes</p>
+    </div>
     <div v-else>
       <div v-for="paciente in pacientes"  v-bind:my="paciente" v-bind:key="paciente.idpaciente">
         <b-card>
@@ -46,7 +49,8 @@ export default {
       pacientes: null,
       dni:"",
       err: false,
-      idsistema: ""
+      idsistema: "",
+      errpacientes: false
     }
   },
   mounted () {
@@ -58,7 +62,7 @@ export default {
         .get('http://localhost:3000/pacientessistema/'+ this.idsistema, {headers: { "user_token": sessionStorage.token }})
         .then(response => (this.pacientes = response.data))
         .catch(error => {
-          console.log(error)
+          this.errpacientes= true;
         })
         })
       .catch(error => {
@@ -84,7 +88,7 @@ export default {
       .get('http://localhost:3000/pacientes', {headers: { "user_token": sessionStorage.token }})
       .then(response => (this.pacientes = response.data))
       .catch(error => {
-        console.log(error)
+        this.errpacientes= true;
       })
     }
   }

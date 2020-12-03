@@ -143,10 +143,69 @@ exports.getCantidadCamasOcupadas = (req, res) => {
 //Si hay cama libre, la ocupa, desocupa la cama anterior
 //Borra los medicos que tenía asignados y asigna como medico al jefe del sistema nuevo
 exports.getCambioSistema = (req, res) => {
-  const  {idsistema, idpaciente, idcama} = req.body;
-  /*Sistema.getCamaLibre(idsistema, (err, data) => {
+  const  {idsistema, idpaciente} = req.body;
+  Sistema.getCamaLibre(idsistema, (err, data) => {
+    console.log("cama libre");
       if (err) {
         if (err.kind === "not_found") {
+          //ver si es guardia y ver su configuracion
+          Sistema.config((error, data) => {
+            if (error) {
+              res.status(500).send({
+                message: "Error servidor  "
+              });
+            }else{
+              if(data.camasinfinitas=== "0"){ 
+                res.status(404).send({
+                  message: `No hay lugar en guardia`
+                });
+               }
+              else{
+                Sistema.desocuparCama(idpaciente, (errD) => {
+                  if (errD) {
+                    res.status(404).send({
+                      message: `No se puede desocupar la cama`
+                    });
+                  }
+                });
+                Sistema.borrarMedicosAsignados(idpaciente, (errM) => {
+                  if (errM) {
+                    res.status(404).send({
+                      message: `No se pueden borrar los médicos asignados`
+                    });
+                  }
+                });
+                Sistema.asignarJefeaPaciente(idpaciente, idsistema, (errP) => {
+                  if (errP) {
+                    if (errP.kind === "not_found") {
+                      res.status(404).send({
+                        message: `No se puede asignar jefe`
+                      });
+                    } else {
+                      res.status(500).send({
+                        message: "Error servidor  "
+                      });
+                    }
+                  }
+                });
+                Paciente.cambiarSistema(idsistema, () => {});
+                Sistema.ocuparCamaIlimitada(dataDos.idpaciente, (errC, dataCama) => {
+                  if (errC) {
+                      res.status(404).send({
+                        message: `No se puede ocupar la cama`
+                      });
+                  }
+                  else {
+                    var datos= {
+                      numerocama: dataCama,
+                      nombresala: 11
+                    }
+                    res.send(datos);
+                  }
+                });
+              }
+            }
+          });
           res.status(404).send({
             message: `No hay camas libres en el sistema`
           });
@@ -156,17 +215,17 @@ exports.getCambioSistema = (req, res) => {
           });
         }
       } else{
+        Sistema.desocuparCama(idpaciente, (errD) => {
+          if (errD) {
+            res.status(404).send({
+              message: `No se puede desocupar la cama`
+            });
+          }
+        });
         Sistema.ocuparCama(data.idcama, idpaciente, (errC) => {
           if (errC) {
             res.status(404).send({
               message: `No se puede ocupar la cama`
-            });
-          }
-        });
-        Sistema.desocuparCama(idcama, (errD) => {
-          if (errD) {
-            res.status(404).send({
-              message: `No se puede desocupar la cama`
             });
           }
         });
@@ -197,5 +256,5 @@ exports.getCambioSistema = (req, res) => {
         }
         res.send(datos);
       }
-    });*/
+    });
 };
