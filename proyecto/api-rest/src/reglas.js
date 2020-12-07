@@ -6,7 +6,6 @@ function diff(fecha1, fecha2) {
     let milisegundosDia = 24 * 60 * 60 * 1000;
     let milisegundosTranscurridos = Math.abs(fecha1.getTime() - fecha2.getTime());
     let diasTranscurridos = Math.round(milisegundosTranscurridos/milisegundosDia);
-    console.log(diasTranscurridos)
     return diasTranscurridos;
 }
 function reglaUno(somnolencia, medicos, idpaciente) {

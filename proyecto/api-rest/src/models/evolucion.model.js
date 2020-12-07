@@ -67,8 +67,8 @@ Evolucion.getUltimaEvolucion = (id, result) => {
       result({ kind: "not_found" }, null);
     });
 };
-Evolucion.getEvolucionesysistemas = (id, result) => {
-  sql.query('SELECT * FROM evolucion WHERE idinternacion = ' + [id] + ' GROUP BY idsistema ORDER BY fecha', (err, res) => {
+Evolucion.getEvolucionesSistema = (idinternacion, idsistema, result) => {
+  sql.query('SELECT * FROM evolucion WHERE idinternacion = ' + [idinternacion] + ' AND idsistema='+[idsistema]+' ORDER BY fecha', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -78,7 +78,6 @@ Evolucion.getEvolucionesysistemas = (id, result) => {
       result(null, res);
       return;
     }
-    // not found Internacion with the id
     result({ kind: "not_found" }, null);
   });
 };

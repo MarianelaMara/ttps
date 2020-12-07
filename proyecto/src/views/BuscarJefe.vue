@@ -52,7 +52,6 @@ export default {
       .get('http://localhost:3000/jefes', {headers: { "user_token": sessionStorage.token }})
       .then(response => (this.jefes = response.data))
       .catch(error => {
-        console.log(error)
       })
   },
   methods: {

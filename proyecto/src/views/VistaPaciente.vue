@@ -23,22 +23,21 @@
         <template #header>
           <b-navbar toggleable="md">
           <b-navbar-brand tag="h4" class="mb-0">{{ nombre }} {{ apellido}}</b-navbar-brand>
-          <b-navbar-toggle target="nav_collapse"  v-bind:key="mismosistema" v-if="mismosistema"></b-navbar-toggle>
+          <b-navbar-toggle target="nav_collapse" v-if="mismosistema"></b-navbar-toggle>
           <b-collapse is-nav id="nav_collapse">
-            <b-navbar-nav class="ml-auto" v-bind:key="mismosistema" v-if="mismosistema" >
-              <b-navbar-nav class="ml-auto" v-bind:key="tieneinternacion" v-if="tieneinternacion">
+            <b-navbar-nav class="ml-auto" v-if="mismosistema" >
+              <b-navbar-nav class="ml-auto" v-if="tieneinternacion">
                 <b-nav-item href="#" v-on:click="agregarevolucion()">Agregar evolución</b-nav-item>
-                <b-nav-item href="#" v-bind:key="rol" v-if="rol === 'jefe'" v-on:click="asignarmedico()">Asignar médico</b-nav-item>
+                <b-nav-item href="#" v-if="rol === 'jefe'" v-on:click="asignarmedico()">Asignar médico</b-nav-item>
                 <b-nav-item href="#" v-b-modal.modal-sm>Obito</b-nav-item>
                   <b-modal id="modal-sm" size="sm" title="Alta por obito" @ok="altaobito()">Confirma alta por obito</b-modal>
                 <b-nav-item href="#" v-b-modal.modal-sm>Alta médico</b-nav-item>
                   <b-modal id="modal-sm" size="sm" title="Alta médica" @ok="altamedica()">Confirma alta médica</b-modal>
                 <b-nav-item-dropdown text="Ver" right>
                   <b-dropdown-item href="" v-on:click="verevoluciones()">Evoluciones</b-dropdown-item>
-                  <b-dropdown-item href="">Evoluciones y sistemas</b-dropdown-item>
                   <b-dropdown-item href="" v-on:click="verinternaciones()">Internaciones</b-dropdown-item>
                 </b-nav-item-dropdown> 
-                <b-nav-item-dropdown  v-bind:key="idsistema" text="Cambiar de sistema" right>
+                <b-nav-item-dropdown text="Cambiar de sistema" right>
                    <b-dropdown-item v-on:click="cambiarsistema(1)" v-if="idsistema===4 || idsistema===5">Guardia</b-dropdown-item>
                   <b-dropdown-item v-on:click="cambiarsistema(2)" v-if="idsistema===1 || idsistema===3  || idsistema===5">Piso Covid</b-dropdown-item>
                   <b-dropdown-item v-on:click="cambiarsistema(3)" v-if="idsistema===1 || idsistema===2">UTI</b-dropdown-item>

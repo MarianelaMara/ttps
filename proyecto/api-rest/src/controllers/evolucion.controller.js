@@ -42,17 +42,13 @@ exports.getUltimaEvolucion = (req, res) => {
       } else res.send(data);
     });
 };
-exports.getEvolucionesysistemas = (req, res) => {
-  const  id = req.params.id;
-  Evolucion.getEvolucionesysistemas(id, (err, data) => {
+exports.getEvolucionesSistema = (req, res) => {
+  const  {idinternacion, idsistema} = req.body;
+  Evolucion.getEvolucionesSistema(idinternacion, idsistema, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
             message: `Not found`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error servidor  "
           });
         }
       } else res.send(data);

@@ -87,6 +87,7 @@
                     </b-form-group>
                     <h6><b>Observación</b></h6>
                     <b-form-textarea v-model= "observacion" rows = "2" max-rows = "6"></b-form-textarea>
+                    <div v-if="idsistema === 3">
                     <h6><b>Síntomas de UTI</b></h6>
                     <b-form-group label-cols="3" label-cols-lg="3" label="ARM">
                       <toggle-button color="black" :sync="true" v-model="arm"/>
@@ -103,6 +104,7 @@
                     <b-form-group v-if="vasopresores=== true" label-cols="3" label-cols-lg="3" label="Descripción">
                       <b-form-textarea v-model="vasopresoresdescripcion" rows = "2" max-rows = "6"></b-form-textarea>
                     </b-form-group>
+                    </div>
                     <div class="text-center">
                       <b-button type="submit" variant="secondary">Guardar</b-button>
                     </div>
