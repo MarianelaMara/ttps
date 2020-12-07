@@ -33,6 +33,7 @@ const Evolucion = function(p) {
   this.traqueotomia = p.traqueotomia;
   this.vasopresores = p.vasopresores; 
   this.vasopresoresdescripcion = p.vasopresoresdescripcion;
+  this.idsistema = p.idsistema;
 };
 
 Evolucion.getEvolucion = (id, result) => {

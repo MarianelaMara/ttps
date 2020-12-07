@@ -15,10 +15,6 @@
           <b-alert show dismissible variant="success"> Se agregó con éxito la evolución
           </b-alert>
         </div>
-        <div v-else-if="err">
-          <b-alert show dismissible variant="danger">Debe agregar una internación al paciente
-          </b-alert>
-        </div>
         <div v-else>
             <b-card>
                 <template #header>
@@ -47,62 +43,62 @@
                       <b-form-select v-model="mecanicaventilatoria" :options = "['Buena', 'Regular', 'Mala']" :required="true"></b-form-select>
                     </b-form-group>
                     <b-form-group label-cols="3" label-cols-lg="3" label="Requiere oxígeno">
-                      <toggle-button color="black" v-model="oxigeno"/>
+                      <toggle-button color="black" :sync="true" v-model="oxigeno"/>
                     </b-form-group>
                     <b-form-group v-if="oxigeno=== true" label-cols="3" label-cols-lg="3" label="Tipo"> 
                       <b-form-select v-model="tipo" :options = "['Canula nasal', 'Máscara con reservorio']" :required="true"></b-form-select>
                     </b-form-group>
-                    <b-form-group v-if="tipo=== 'Canula nasal'" label-cols="3" label-cols-lg="3" label="Litros por minuto"> 
+                    <b-form-group v-if="(tipo=== 'Canula nasal')&& (oxigeno===true) " label-cols="3" label-cols-lg="3" label="Litros por minuto"> 
                       <b-form-select v-model="litros" :options = "[1, 2, 3, 4, 5, 6]" :required="true"></b-form-select>
                     </b-form-group>
-                    <b-form-group v-if="tipo=== 'Máscara con reservorio'" label-cols="3" label-cols-lg="3" label="Porcentaje oxígeno"> 
+                    <b-form-group v-if="(tipo=== 'Máscara con reservorio') && (oxigeno===true)" label-cols="3" label-cols-lg="3" label="Porcentaje oxígeno"> 
                       <b-form-input type="text" v-model="porcentaje" placeholder="Valor entre 1 y 100" :required="true"></b-form-input>
                     </b-form-group>
                     <b-form-group v-if="oxigeno=== true" label-cols="3" label-cols-lg="3" label="Saturación:">
                       <b-form-input type="text" v-model="saturacion" :required="true"></b-form-input>                    
                     </b-form-group>
                     <b-form-group v-if="oxigeno=== true" label-cols="3" label-cols-lg="3" label="PaFi">
-                      <toggle-button color="black" v-model="pafi"/>
+                      <toggle-button color="black" :sync="true" v-model="pafi"/>
                     </b-form-group>
                      <b-form-group v-if="pafi=== true" label-cols="3" label-cols-lg="3" label="Valor PaFi:">
                       <b-form-input type="text" v-model="valorpafi" :required="true"></b-form-input>                    
                     </b-form-group> 
                     <b-form-group v-if="oxigeno=== true" label-cols="3" label-cols-lg="3" label="Prono vigil">
-                      <toggle-button color="black" v-model="pronovigil"/>
+                      <toggle-button color="black" :sync="true" v-model="pronovigil"/>
                     </b-form-group>
                     <b-form-group v-if="oxigeno=== true" label-cols="3" label-cols-lg="3" label="Tos">
-                      <toggle-button color="black" v-model="tos"/>
+                      <toggle-button color="black" :sync="true" v-model="tos"/>
                     </b-form-group>
                      <b-form-group v-if="oxigeno=== true" label-cols="3" label-cols-lg="3" label="Disnea"> 
                       <b-form-select v-model="disnea" :options = "[1, 2, 3, 4]" :value= "null" :required="true"></b-form-select>
                     </b-form-group>
                     <b-form-group v-if="oxigeno=== true" label-cols="3" label-cols-lg="3" label="Estabilidad">
-                      <toggle-button color="black" v-model="estabilidad"/>
+                      <toggle-button color="black" :sync="true" v-model="estabilidad"/>
                     </b-form-group>
                     <h6><b>Otros síntomas</b></h6>
                     <b-form-group label-cols="3" label-cols-lg="3" label="Somnolencia">
-                      <toggle-button color="black" v-model="somnolencia"/>
+                      <toggle-button color="black" :sync="true" v-model="somnolencia"/>
                     </b-form-group>
                     <b-form-group label-cols="3" label-cols-lg="3" label="Anosmia">
-                      <toggle-button color="black" v-model="anosmia"/>
+                      <toggle-button color="black" :sync="true" v-model="anosmia"/>
                     </b-form-group>
                     <b-form-group label-cols="3" label-cols-lg="3" label="Disgeusia">
-                      <toggle-button color="black" v-model="disgeusia"/>
+                      <toggle-button color="black" :sync="true" v-model="disgeusia"/>
                     </b-form-group>
                     <h6><b>Observación</b></h6>
                     <b-form-textarea v-model= "observacion" rows = "2" max-rows = "6"></b-form-textarea>
                     <h6><b>Síntomas de UTI</b></h6>
                     <b-form-group label-cols="3" label-cols-lg="3" label="ARM">
-                      <toggle-button color="black" v-model="arm"/>
+                      <toggle-button color="black" :sync="true" v-model="arm"/>
                     </b-form-group>
                     <b-form-group v-if="arm=== true" label-cols="3" label-cols-lg="3" label="Descripción">
                       <b-form-textarea v-model="armdescripcion" rows = "2" max-rows = "6"></b-form-textarea>
                     </b-form-group>
                     <b-form-group label-cols="3" label-cols-lg="3" label="Traqueotomía">
-                      <toggle-button color="black" v-model="traqueotomia"/>
+                      <toggle-button color="black" :sync="true" v-model="traqueotomia"/>
                     </b-form-group>
                     <b-form-group label-cols="3" label-cols-lg="3" label="Vasopresores">
-                      <toggle-button color="black" v-model="vasopresores"/>
+                      <toggle-button color="black" :sync="true" v-model="vasopresores"/>
                     </b-form-group>
                     <b-form-group v-if="vasopresores=== true" label-cols="3" label-cols-lg="3" label="Descripción">
                       <b-form-textarea v-model="vasopresoresdescripcion" rows = "2" max-rows = "6"></b-form-textarea>
@@ -130,6 +126,7 @@ export default {
   data: () => ({
     idsistema: '',
     idinternacion: '',
+    fechasintomas: '',
     fc: '',
     fr: '',
     temperatura: '',
@@ -156,8 +153,8 @@ export default {
     traqueotomia: false,
     vasopresores: false,
     vasopresoresdescripcion: '',
-    err: false,
-    ev:false
+    ev:false,
+    satAnterior: '' 
   }),
    mounted () {
     axios
@@ -171,7 +168,8 @@ export default {
     axios
       .get('http://localhost:3000/internacion/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
       .then(response => {
-        this.idinternacion= response.data.idinternacion
+        this.idinternacion= response.data.idinternacion,
+        this.fechasintomas= response.data.fechasintomas,
         axios .get('http://localhost:3000/ultimaevolucion/'+ this.idinternacion, {headers: { "user_token": sessionStorage.token }})
         .then(response => {
         this.temperatura= response.data.temperatura,
@@ -179,42 +177,64 @@ export default {
         this.tadiastolica= response.data.tadiastolica,
         this.fc= response.data.fc,
         this.fr= response.data.fr,
-        this.mecanicaventilatoria= response.data.mecanicaventilatoria,
-        this.oxigeno= Boolean(response.data.oxigeno),
+        this.mecanicaventilatoria= response.data.mecanicaventilatoria,      
         this.tipo= response.data.tipo,
         this.litros= response.data.litros,
         this.porcentaje= response.data.porcentaje,
         this.saturacion= response.data.saturacion,
-        this.tos=  Boolean(response.data.tos),
-        this.pafi=  Boolean(response.data.pafi),
+        this.satAnterior= response.data.saturacion,
         this.valorpafi= response.data.valorpafi,
-        this.pronovigil=  Boolean(response.data.pronovigil),
         this.disnea= response.data.disnea,
-        this.estabilidad=  Boolean(response.data.estabilidad),
-        this.anosmia=  Boolean(response.data.anosmia),
-        this.disgeusia=  Boolean(response.data.disgeusia),
-        this.somnolencia=  Boolean(response.data.somnolencia),
         this.observacion= response.data.observacion,
-        this.arm=  Boolean(response.data.arm),
         this.armdescripcion= response.data.armdescripcion,
-        this.traqueotomia=  Boolean(response.data.traqueotomia),
-        this.vasopresoresdescripcion= response.data.vasopresoresdescripcion,
-        this.vasopresores=  Boolean(response.data.vasopresores)
+        this.vasopresoresdescripcion= response.data.vasopresoresdescripcion;
+         if (response.data.vasopresores === 1){
+          this.vasopresores= true
+        }
+         if (response.data.traqueotomia === 1){
+          this.traqueotomia= true
+        }
+         if (response.data.arm === 1){
+          this.arm= true
+        }
+         if (response.data.oxigeno === 1){
+          this.oxigeno= true
+        }
+          if (response.data.tos === 1){
+          this.tos= true
+        }
+         if (response.data.pafi === 1){
+          this.pafi= true
+        }
+         if (response.data.pronovigil === 1){
+          this.pronovigil= true
+        }
+         if (response.data.estabilidad === 1){
+          this.estabilidad= true
+        }
+         if (response.data.anosmia === 1){
+          this.anosmia= true
+        }
+         if (response.data.disgeusia === 1){
+          this.disgeusia= true
+        }
+         if (response.data.somnolencia === 1){
+          this.somnolencia= true
+        }
       })
       })
       .catch(error => {
-        this.err = true
+        
     });
   },
   methods: {
     agregar(){     
-        axios.post('http://localhost:3000/evolucion', {idsistema: this.idsistema, idinternacion: this.idinternacion, idpersonal: sessionStorage.idempleado, temperatura: this.temperatura, tasistolica: this.tasistolica, tadiastolica: this.tadiastolica, fc: this.fc, fr: this.fr , mecanicaventilatoria: this.mecanicaventilatoria , oxigeno: this.oxigeno, tipo: this.tipo, litros: this.litros, porcentaje: this.porcentaje, saturacion: this.saturacion, pafi: this.pafi, valorpafi: this.valorpafi, pronovigil: this.pronovigil, tos: this.tos, disnea: this.disnea, estabilidad: this.estabilidad, somnolencia: this.somnolencia, anosmia: this.anosmia, disgeusia: this.disgeusia, observacion: this.observacion, arm: this.arm, armdescripcion: this.armdescripcion, traqueotomia: this.traqueotomia, vasopresores: this.vasopresores, vasopresoresdescripcion: this.vasopresoresdescripcion}, {headers: { "user_token": sessionStorage.token }})
+        axios.post('http://localhost:3000/evolucion', {idsistema: this.idsistema, idinternacion: this.idinternacion, idpersonal: sessionStorage.idempleado, temperatura: this.temperatura, tasistolica: this.tasistolica, tadiastolica: this.tadiastolica, fc: this.fc, fr: this.fr , mecanicaventilatoria: this.mecanicaventilatoria , oxigeno: this.oxigeno, tipo: this.tipo, litros: this.litros, porcentaje: this.porcentaje, saturacion: this.saturacion, pafi: this.pafi, valorpafi: this.valorpafi, pronovigil: this.pronovigil, tos: this.tos, disnea: this.disnea, estabilidad: this.estabilidad, somnolencia: this.somnolencia, anosmia: this.anosmia, disgeusia: this.disgeusia, observacion: this.observacion, arm: this.arm, armdescripcion: this.armdescripcion, traqueotomia: this.traqueotomia, vasopresores: this.vasopresores, vasopresoresdescripcion: this.vasopresoresdescripcion, satAnterior: this.satAnterior, fechasintomas: this.fechasintomas, idempleado: sessionStorage.idempleado, idpaciente:  this.$route.params.id }, {headers: { "user_token": sessionStorage.token }})
         
         .then(response => {
           this.ev= true;
         })
         .catch(error => {
-          this.err = true;
         });
     },  
     verpaciente() {

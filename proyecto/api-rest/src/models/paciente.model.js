@@ -78,6 +78,20 @@ Paciente.getPacienteDni = (dni, result) => {
     // not found Paciente with the dni
     result({ kind: "not_found" }, null);
   });
+};
+//devuelve los medicos asociados a un paciente
+Paciente.getMedicosPaciente = (idpaciente, result) => {
+  sql.query('SELECT idempleado FROM tienemedicos WHERE idpaciente = ' + [idpaciente], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    else {
+      result(null, res);
+      return;
+    }
+  });
 }; 
 Paciente.asignarMedico = (idpaciente, idempleado, idjefe, result) => {
   sql.query('INSERT INTO tienemedicos (idpaciente, idempleado) VALUES ('+[idpaciente]+', ' + [idempleado]+')', (err, res) => {
@@ -122,8 +136,8 @@ Paciente.addPaciente = (dni, nombre, apellido, domicilio, fechanac, telefono,ant
   });
 };
 //cambia el idsistema del paciente
-Paciente.cambiarSistema = (idsistema, result) => {
-  sql.query('UPDATE paciente SET idsistema = ' + [idsistema], (err, res) => {
+Paciente.cambiarSistema = (idsistema, idpaciente, result) => {
+  sql.query('UPDATE paciente SET idsistema = ' + [idsistema]+ ' WHERE (idpaciente = '+[idpaciente]+')', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

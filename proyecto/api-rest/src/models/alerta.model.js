@@ -51,4 +51,27 @@ Alerta.marcarAlerta = (id, result) => {
     });
 };
 
+Alerta.addAlerta = (idpaciente, texto, result) => {
+  sql.query('INSERT INTO alerta (idpaciente, texto, fecha, vista) VALUES ('+[idpaciente]+', "'+[texto]+'", CURDATE(), 0)' , (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    else { 
+      result(null, res.insertId);
+      return;
+    }
+  });
+};
+Alerta.asociar = (idalerta, idempleado, result) => {
+  sql.query('INSERT INTO tienealerta (idalerta, idempleado) VALUES ('+[idalerta]+', '+[idempleado]+')' , (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+  });
+};
+
 module.exports = Alerta;

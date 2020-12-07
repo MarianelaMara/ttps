@@ -249,7 +249,7 @@ exports.getCambioSistema = (req, res) => {
             }
           }
         });
-        Paciente.cambiarSistema(idsistema, () => {});
+        Paciente.cambiarSistema(idsistema, idpaciente, () => {});
         var datos= {
           numerocama: data.numero,
           nombresala: data.nombresala
