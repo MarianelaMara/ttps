@@ -27,5 +27,7 @@ router.get("/sistema/:id", [middleware.checkToken], sistema.getSistema);
 router.get("/config", [middleware.checkToken], sistema.config);
 //cambiar la configuracion actual de las camas de guardia
 router.get("/cambiarconfig", [middleware.checkToken], sistema.cambiarconfig);
+//devuelve el numero de cama y nombre de la sala de un paciente dado su id 
+router.get("/info/:id", [middleware.checkToken], sistema.info);
 
 module.exports = router;

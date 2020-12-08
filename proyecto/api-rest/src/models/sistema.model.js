@@ -13,6 +13,19 @@ const Cama = function(a) {
   }
   else this.estado = "ocupada"
 }
+Sistema.info = (id, result) => {
+  sql.query('SELECT nombresala, numero FROM cama INNER JOIN sala ON cama.idsala = sala.idsala WHERE cama.idpaciente= '+ [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } 
+    if (res.length) { 
+      result(null, res[0]);
+      return;
+    }
+  });
+};
 Sistema.cambiarconfig = (result) => {
 
   sql.query('UPDATE sistema SET camasinfinitas= !camasinfinitas WHERE idsistema= 1', (err, res) => {
@@ -200,6 +213,15 @@ Sistema.ocuparCama = (idcama, idpaciente,result) => {
       }
     });
 };
+Sistema.ocuparCamaCasa = (idpaciente,result) => {
+  sql.query('INSERT INTO cama (idsala, numero, idpaciente, libre )  VALUES ("9", "1", "'+[idpaciente]+'", "0")', (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+  });
+};
 Sistema.ocuparCamaIlimitada = (idpaciente,result) => {
   sql.query('SELECT * FROM cama WHERE cama.idsala= 11 ORDER BY cama.numero DESC LIMIT 1', (errDos, res) => {
     if (errDos) {
@@ -238,14 +260,23 @@ Sistema.ocuparCamaIlimitada = (idpaciente,result) => {
   
 };
 Sistema.desocuparCama = (idpaciente, result) => {
-  sql.query('UPDATE cama SET idpaciente ="0", libre= "1" WHERE (idpaciente=" '+[idpaciente]+'")', (err) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    } 
-  });
-};
+      sql.query('UPDATE cama SET idpaciente ="0", libre= "1" WHERE (idpaciente=" '+[idpaciente]+'")', (err) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        } 
+      });
+}
+Sistema.desocuparCamaCasa = (idpaciente, result) =>{
+     sql.query('DELETE FROM cama WHERE (idpaciente=" '+[idpaciente]+'")', (err) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      } 
+    });
+}
 Sistema.borrarMedicosAsignados= (idpaciente, result) => {
   sql.query('DELETE FROM tienemedicos WHERE (idpaciente= "'+[idpaciente]+'")', (err) => {
     if (err) {

@@ -14,21 +14,24 @@
        <div v-if="errorcambio">
           <b-alert show dismissible variant="danger">No se puede realizar el cambio de sistema porque no hay camas disponibles
           </b-alert>
-    </div> 
-    <div v-if="cambio">
+       </div> 
+      <div v-if="cambio">
           <b-alert show dismissible variant="success"> El paciente fue asignado a la cama {{ cama }} en la sala {{ sala }}.</b-alert>
-    </div>  
-    <div v-else>
+      </div>  
+      <div v-else-if="cambiouti">
+          <b-alert show dismissible variant="success"> No hay lugar en UTI el paciente se cambio a guardia en la cama {{ cama }} en la sala {{ sala }}.</b-alert>
+      </div>  
+      <div v-else>
       <b-card>
         <template #header>
           <b-navbar toggleable="md">
           <b-navbar-brand tag="h4" class="mb-0">{{ nombre }} {{ apellido}}</b-navbar-brand>
-          <b-navbar-toggle target="nav_collapse"  v-bind:key="mismosistema" v-if="mismosistema"></b-navbar-toggle>
+          <b-navbar-toggle target="nav_collapse" v-if="mismosistema"></b-navbar-toggle>
           <b-collapse is-nav id="nav_collapse">
-            <b-navbar-nav class="ml-auto" v-bind:key="mismosistema" v-if="mismosistema" >
-              <b-navbar-nav class="ml-auto" v-bind:key="tieneinternacion" v-if="tieneinternacion">
+            <b-navbar-nav class="ml-auto" v-if="mismosistema" >
+              <b-navbar-nav class="ml-auto" v-if="tieneinternacion">
                 <b-nav-item href="#" v-on:click="agregarevolucion()">Agregar evolución</b-nav-item>
-                <b-nav-item href="#" v-bind:key="rol" v-if="rol === 'jefe'" v-on:click="asignarmedico()">Asignar médico</b-nav-item>
+                <b-nav-item href="#" v-if="rol === 'jefe'" v-on:click="asignarmedico()">Asignar médico</b-nav-item>
                 <b-nav-item href="#" v-b-modal.modal-sm>Obito</b-nav-item>
                   <b-modal id="modal-sm" size="sm" title="Alta por obito" @ok="altaobito()">Confirma alta por obito</b-modal>
                 <b-nav-item href="#" v-b-modal.modal-sm>Alta médico</b-nav-item>
@@ -38,7 +41,7 @@
                   <b-dropdown-item href="">Evoluciones y sistemas</b-dropdown-item>
                   <b-dropdown-item href="" v-on:click="verinternaciones()">Internaciones</b-dropdown-item>
                 </b-nav-item-dropdown> 
-                <b-nav-item-dropdown  v-bind:key="idsistema" text="Cambiar de sistema" right>
+                <b-nav-item-dropdown text="Cambiar de sistema" right>
                    <b-dropdown-item v-on:click="cambiarsistema(1)" v-if="idsistema===4 || idsistema===5">Guardia</b-dropdown-item>
                   <b-dropdown-item v-on:click="cambiarsistema(2)" v-if="idsistema===1 || idsistema===3  || idsistema===5">Piso Covid</b-dropdown-item>
                   <b-dropdown-item v-on:click="cambiarsistema(3)" v-if="idsistema===1 || idsistema===2">UTI</b-dropdown-item>
@@ -47,7 +50,7 @@
                 </b-nav-item-dropdown>
               </b-navbar-nav>
               <b-navbar-nav class="ml-auto" v-else>
-                <b-nav-item href="#" v-bind:key="tieneinternacion" v-bind:idpaciente="idpaciente" v-if="tieneinternacion === false"  v-on:click="agregarinternacion()">Agregar internación</b-nav-item>
+                <b-nav-item href="#" v-if="tieneinternacion === false"  v-on:click="agregarinternacion()">Agregar internación</b-nav-item>
               </b-navbar-nav>
             </b-navbar-nav>
             </b-collapse>
@@ -55,6 +58,8 @@
         </template>
         <b-list-group flush>
           <b-list-group-item><b>Sistema actual:</b> {{ sistema }}</b-list-group-item>
+          <b-list-group-item><b>Sala:</b> {{ sala }}</b-list-group-item>
+          <b-list-group-item><b>Número de cama:</b> {{ cama }}</b-list-group-item>
           <b-list-group-item><b>DNI:</b> {{ dni }}</b-list-group-item>
           <b-list-group-item><b>Domicilio:</b> {{ domicilio }}</b-list-group-item>
           <b-list-group-item><b>Fecha de nacimiento:</b> {{ fechanac.slice(0, -14) }}</b-list-group-item>
@@ -113,7 +118,8 @@ export default {
       cambio: false,
       errorcambio: false,
       cama: '',
-      sala: ''
+      sala: '',
+      cambiouti: false,
     }
   },
   mounted () {
@@ -136,10 +142,7 @@ export default {
           .then(response => {
           this.sistema = response.data.nombresistema
         })
-      })
-      .catch(error => {
-    });
-    axios
+        axios
       .get('http://localhost:3000/empleado/'+ sessionStorage.idempleado, {headers: { "user_token": sessionStorage.token }})
       .then(response => {
         if(response.data.idsistema === this.idsistema){
@@ -149,6 +152,14 @@ export default {
       })
       .catch(error => {
     });
+      })
+      .catch(error => {
+    });
+     axios.get('http://localhost:3000/info/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
+          .then(response => {
+          this.cama = response.data.numero,
+          this.sala = response.data.nombresala
+      })
      axios
       .get('http://localhost:3000/internacion/'+ this.$route.params.id, {headers: { "user_token": sessionStorage.token }})
       .then(response => {
@@ -198,14 +209,26 @@ export default {
       },
       cambiarsistema(id) {
         axios
-        .post('http://localhost:3000/cambiarsistema', {idsistema: id, idpaciente: this.idpaciente},{headers: { "user_token": sessionStorage.token }})
+        .post('http://localhost:3000/cambiarsistema', {idsistemaactual: this.idsistema, idsistema: id, idpaciente: this.idpaciente},{headers: { "user_token": sessionStorage.token }})
         .then(response => {
           this.cambio = true;
           this.cama= response.data.numerocama;
           this.sala= response.data.nombresala
         })
         .catch(error => {
-          this.errorcambio= true;
+          if (id === 3){
+            axios
+            .post('http://localhost:3000/cambiarsistema', {idsistema: 1, idpaciente: this.idpaciente},{headers: { "user_token": sessionStorage.token }})
+            .then(response => {
+               this.cambiouti = true;
+               this.cama= response.data.numerocama;
+               this.sala= response.data.nombresala
+            })
+           .catch(error => {
+             this.errorcambio= true;
+            });
+          }
+          else  this.errorcambio= true;
         });
       }
   }
