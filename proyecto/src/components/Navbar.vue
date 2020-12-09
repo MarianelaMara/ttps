@@ -14,7 +14,7 @@
                     </b-nav-item-dropdown>
                     <b-nav-item-dropdown v-if="rol != 'admin'" text="Pacientes" right>
                         <b-dropdown-item href="/buscarPaciente">Buscar Paciente</b-dropdown-item>
-                        <b-dropdown-item href="/agregarPaciente">Agregar Paciente</b-dropdown-item>
+                        <b-dropdown-item v-if="idsistema===1" href="/agregarPaciente">Agregar Paciente</b-dropdown-item>
                     </b-nav-item-dropdown>
                     <b-nav-item-dropdown v-if="rol != 'medico'" text="Sistemas" right>
                         <b-dropdown-item href="#" v-on:click="sistema(1)">Guardia</b-dropdown-item>
