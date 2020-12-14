@@ -88,7 +88,11 @@ Paciente.getMedicosPaciente = (idpaciente, result) => {
       return;
     } 
     else {
-      result(null, res);
+      var a=[];
+      for(r of res){
+        a.push(r.idempleado);
+      }
+      result(null, a);
       return;
     }
   });

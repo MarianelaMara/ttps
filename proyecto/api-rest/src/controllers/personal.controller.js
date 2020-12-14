@@ -82,8 +82,8 @@ exports.getMedicosSistema = (req, res) => {
 };
 
 exports.getMedicoBuscar = (req, res) => {
-  const  {nombre, apellido} = req.body;
-  Personal.getMedicoBuscar(nombre, apellido, (err, data) => {
+  const  {apellido} = req.body;
+  Personal.getMedicoBuscar(apellido, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
@@ -114,8 +114,8 @@ exports.getMedicoAsignado = (req, res) => {
     });
 };
 exports.getJefeBuscar = (req, res) => {
-  const  {nombre, apellido} = req.body;
-  Personal.getJefeBuscar(nombre, apellido, (err, data) => {
+  const  {apellido} = req.body;
+  Personal.getJefeBuscar(apellido, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({

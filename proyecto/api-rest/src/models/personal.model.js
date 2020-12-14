@@ -127,8 +127,8 @@ Personal.getEmpleado = (id, result) => {
   });
 };
 
-Personal.getMedicoBuscar = (nombre, apellido, result) => {
-  sql.query('SELECT * FROM empleado WHERE rol="medico" AND nombre= "' + [nombre]+'" AND apellido="'+[apellido]+'"', (err, res) => {
+Personal.getMedicoBuscar = (apellido, result) => {
+  sql.query('SELECT * FROM empleado WHERE rol="medico" AND apellido="'+[apellido]+'"', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -142,8 +142,8 @@ Personal.getMedicoBuscar = (nombre, apellido, result) => {
   });
 };
 
-Personal.getJefeBuscar = (nombre, apellido, result) => {
-  sql.query('SELECT * FROM empleado WHERE rol="jefe" AND nombre= "' + [nombre]+'" AND apellido="'+[apellido]+'"', (err, res) => {
+Personal.getJefeBuscar = (apellido, result) => {
+  sql.query('SELECT * FROM empleado WHERE rol="jefe" AND apellido="'+[apellido]+'"', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
