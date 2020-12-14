@@ -5,9 +5,8 @@
     <div class="search">
         <b-navbar type="light" variant="light">
             <b-nav-form @submit.prevent="search">
-                <b-form-input v-model="nombre" class="mr-sm-2" placeholder="Nombre" required></b-form-input>
                 <b-form-input v-model="apellido" class="mr-sm-2" placeholder="Apellido" required></b-form-input>
-                <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit">Buscar</b-button>
+                <b-button variant="outline-primary" class="my-2 my-sm-0" type="submit">Filtrar</b-button>
             </b-nav-form>
         </b-navbar>
     </div>
@@ -42,7 +41,6 @@ export default {
   data () {
     return {
       jefes: null,
-      nombre:"",
       apellido:"",
       err: false
     }
@@ -60,7 +58,7 @@ export default {
       this.$router.push('/vistaEmpleado/'+id);
     },
     search(){
-      axios.post('http://localhost:3000/buscarjefe', {nombre: this.nombre, apellido: this.apellido}, {headers: { "user_token": sessionStorage.token }})
+      axios.post('http://localhost:3000/buscarjefe', {apellido: this.apellido}, {headers: { "user_token": sessionStorage.token }})
         .then(response => {
           this.jefes = response.data;
           this.err = false;

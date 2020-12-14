@@ -229,10 +229,9 @@ export default {
   },
   methods: {
     agregar(){     
-        axios.post('http://localhost:3000/evolucion', {idsistema: this.idsistema, idinternacion: this.idinternacion, idpersonal: sessionStorage.idempleado, temperatura: this.temperatura, tasistolica: this.tasistolica, tadiastolica: this.tadiastolica, fc: this.fc, fr: this.fr , mecanicaventilatoria: this.mecanicaventilatoria , oxigeno: this.oxigeno, tipo: this.tipo, litros: this.litros, porcentaje: this.porcentaje, saturacion: this.saturacion, pafi: this.pafi, valorpafi: this.valorpafi, pronovigil: this.pronovigil, tos: this.tos, disnea: this.disnea, estabilidad: this.estabilidad, somnolencia: this.somnolencia, anosmia: this.anosmia, disgeusia: this.disgeusia, observacion: this.observacion, arm: this.arm, armdescripcion: this.armdescripcion, traqueotomia: this.traqueotomia, vasopresores: this.vasopresores, vasopresoresdescripcion: this.vasopresoresdescripcion, satAnterior: this.satAnterior, fechasintomas: this.fechasintomas, idempleado: sessionStorage.idempleado, idpaciente:  this.$route.params.id }, {headers: { "user_token": sessionStorage.token }})
-        
+        axios.post('http://localhost:3000/evolucion', {idsistema: this.idsistema, idinternacion: this.idinternacion, idpersonal: sessionStorage.idempleado, temperatura: this.temperatura, tasistolica: this.tasistolica, tadiastolica: this.tadiastolica, fc: this.fc, fr: this.fr , mecanicaventilatoria: this.mecanicaventilatoria , oxigeno: this.oxigeno, tipo: this.tipo, litros: this.litros, porcentaje: this.porcentaje, saturacion: this.saturacion, pafi: this.pafi, valorpafi: this.valorpafi, pronovigil: this.pronovigil, tos: this.tos, disnea: this.disnea, estabilidad: this.estabilidad, somnolencia: this.somnolencia, anosmia: this.anosmia, disgeusia: this.disgeusia, observacion: this.observacion, arm: this.arm, armdescripcion: this.armdescripcion, traqueotomia: this.traqueotomia, vasopresores: this.vasopresores, vasopresoresdescripcion: this.vasopresoresdescripcion , satAnterior: this.satAnterior, fechasintomas: this.fechasintomas, idpaciente:  this.$route.params.id }, {headers: { "user_token": sessionStorage.token }})
         .then(response => {
-          this.ev= true;
+            this.ev= true;
         })
         .catch(error => {
         });
