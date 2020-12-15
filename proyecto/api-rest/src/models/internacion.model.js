@@ -127,8 +127,9 @@ Internacion.altamedica = (id, idpaciente, result) => {
 };
   
 Internacion.addInternacion = (idpaciente, fechasintomas, fechadiagnostico, enfermedadactual,  result) => {
+  console.log(fechadiagnostico);
   if(fechadiagnostico === ''){ fechadiagnostico = 'NULL'}
-  sql.query('INSERT INTO internacion (`idpaciente`, `fecha`, `fechasintomas`, `fechadiagnostico`, `enfermedadactual`,  `estado`) VALUES ("' + [idpaciente] + '", CURDATE(), "' + [fechasintomas] + '", ' + [fechadiagnostico] + ', "' + [enfermedadactual] +'", "activo")' , (err, res) => {
+  sql.query('INSERT INTO internacion (`idpaciente`, `fecha`, `fechasintomas`, `fechadiagnostico`, `enfermedadactual`,  `estado`) VALUES ("' + [idpaciente] + '", CURDATE(), "' + [fechasintomas] + '", "' + [fechadiagnostico] + '", "' + [enfermedadactual] +'", "activo")' , (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

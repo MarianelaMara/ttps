@@ -93,7 +93,7 @@ export default {
           axios
          .get('http://localhost:3000/config', {headers: { "user_token": sessionStorage.token }})
          .then(response => {
-            if(response.data.camasinfinitas === 0){
+            if(response.data.camasinfinitas === "0"){
               this.config= 'Camas de guardia limitadas'
             }
             else this.config = 'Camas de guardia ilimitadas'        
